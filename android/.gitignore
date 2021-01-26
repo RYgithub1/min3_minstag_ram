@@ -11,3 +11,5 @@ GeneratedPluginRegistrant.java
 key.properties
 
 
+# Android
+google-services.json
