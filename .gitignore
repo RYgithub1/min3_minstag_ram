@@ -49,4 +49,4 @@ app.*.map.json
 google-services.json
 # iOS(comm)
 GoogleService-Info.plist
-info.plist
+Info.plist
