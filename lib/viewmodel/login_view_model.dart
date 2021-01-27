@@ -11,6 +11,12 @@ class LoginViewModel extends ChangeNotifier {
   LoginViewModel({this.userRepository});
 
 
+  /// [（V->VM->RゆえVから呼ぶ(Vに呼ぶコード書く)）]
+  Future<bool> isSignIn() async {
+    return await userRepository.isSignIn();
+  }
+
+
 
 
 }
