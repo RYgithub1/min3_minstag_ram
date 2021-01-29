@@ -13,6 +13,9 @@ class UserRepository {
   final DatabaseManager dbManager;
   UserRepository({this.dbManager});
 
+  /// [userのデータをとってくる(=Read)method:  用]
+  static User currentUser;
+
   /// [(Firebase毎度のパターン)auth確認用のインスタンス生成]
   final auth.FirebaseAuth _auth = auth.FirebaseAuth.instance;
   final GoogleSignIn googleSignIn = GoogleSignIn();
@@ -26,6 +29,8 @@ class UserRepository {
     /// [_authを突破したcurrentUserが存在するか否か]
     /// [SignIn: 認証見に行きfirebaseUser存在していればtrue]
     if(firebaseUser != null){
+      /// [後でsignOutメソ使うとログインログが残り、"static User currentUser = null"になるので、dbからのデータを代入しておく]
+      currentUser = await dbManager.getInfoFromDbById(firebaseUser.uid);
       return true;
     }
     return false;
@@ -58,11 +63,16 @@ class UserRepository {
         /// [_convertToUser: DDCで作成したuser.dart/propertyと、firebase/PlatformUserInfo()/propertyが異なるのｄえ変換]
       }
 
+      /// [userのデータをとってくる(=Read)method: 戻り値は<User>]
+      currentUser = await dbManager.getInfoFromDbById(firebaseUser.uid);
+      return true;
 
     } catch (error) {
-      print(error);
+      print("comm02: error: UserRepository()/signIn(): ${error.toString()}");
+      return false;
+    } finally {
+      print("comm02: finally: UserRepository()/signIn()");
     }
-
   }
 
 
