@@ -10,11 +10,29 @@ class LoginViewModel extends ChangeNotifier {
   final UserRepository userRepository;
   LoginViewModel({this.userRepository});
 
+  bool isLoading = false;
+  bool isSuccessful = false;
 
+
+
+  /// [ログイン済みか確認のmethod]
   /// [（V->VM->RゆえVから呼ぶ(Vに呼ぶコード書く)）]
   /// [Non Consumer: Use FutureBuilder(needs return)=戻り値boolかつreturn必須]
   Future<bool> isSignIn() async {
     return await userRepository.isSignIn();
+  }
+
+
+  /// [ログインしていない->ログイン処理]
+  Future<void> signIn() async {
+    isLoading = true;
+    notifyListeners();
+
+    isSuccessful = await userRepository.signIn();
+
+    isLoading = false;
+    notifyListeners();
+
   }
 
 

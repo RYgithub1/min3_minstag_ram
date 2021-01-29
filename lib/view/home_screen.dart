@@ -17,6 +17,7 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          Text("home screen"),
           Text(S.of(context).appTitle),
           Icon(Icons.add),
           

@@ -16,7 +16,6 @@ dependencies:
   # Firebase:|>
   firebase_core: ^0.5.3
   cloud_firestore: ^0.14.0+2
-  # firebase_storage: ^4.0.0
   firebase_storage: ^5.2.0
   firebase_auth:  ^0.18.4+1
   firebase_analytics: ^6.2.0
@@ -26,11 +25,12 @@ dependencies:
   # >|
   google_sign_in: ^4.5.9
   provider: ^4.3.3
+  font_awesome_flutter: ^8.11.0
+
 
 # For Firebase packages
 dependency_overrides:
   intl: 0.17.0-nullsafety.2
-
 
 
 dev_dependencies:

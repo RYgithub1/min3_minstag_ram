@@ -4,9 +4,9 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:min3_minstag_ram/di/providers.dart';
 import 'package:min3_minstag_ram/generated/l10n.dart';
 
-import 'package:min3_minstag_ram/style.dart';
-import 'package:min3_minstag_ram/view/screens/home_screen.dart';
-import 'package:min3_minstag_ram/view/screens/login_screen.dart';
+import 'package:min3_minstag_ram/view/common/style.dart';
+import 'package:min3_minstag_ram/view/home_screen.dart';
+import 'package:min3_minstag_ram/view/login/screens/login_screen.dart';
 import 'package:min3_minstag_ram/viewmodel/login_view_model.dart';
 import 'package:provider/provider.dart';
 
