@@ -14,14 +14,16 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text("home screen"),
-          Text(S.of(context).appTitle),
-          Icon(Icons.add),
-          
-        ],
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text("home screen"),
+            Text(S.of(context).appTitle),
+            Icon(Icons.science),
+            
+          ],
+        ),
       ),
     );
   }

@@ -29,12 +29,9 @@ class LoginViewModel extends ChangeNotifier {
     notifyListeners();
 
     isSuccessful = await userRepository.signIn();
-
     isLoading = false;
     notifyListeners();
-
   }
-
 
 
 

@@ -58,8 +58,8 @@ class MyApp extends StatelessWidget {
       /// home: Consumer<>TA(   [Consumer vs FutureBuilder]
       home: FutureBuilder(
         future: loginViewModel.isSignIn(),
-        builder: (context, AsyncSnapshot<bool> snapshot) {
-          if(snapshot.hasData && snapshot.data) {   /// [データあり&&データがtrue->ログイン中へ進む]
+        builder: (context, AsyncSnapshot<bool> snapshot){
+          if (snapshot.hasData && snapshot.data){   /// [データあり&&データがtrue->ログイン中へ進む]
             return HomeScreen();
           } else {   /// [そうでなければログイン処理へ進む]
             return LoginScreen();

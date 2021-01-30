@@ -12,42 +12,37 @@ class DatabaseManager {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
 
+
   /// [crud: Read: FireStoreから、検索条件を指定して、documentを取得する]
   Future<bool> searchUserInDb(auth.User firebaseUser) async {
     final query = await _db.collection("users")
-        .where(
-          "userId",   /// [DartDataClass->user.dart/property]
-          isEqualTo: firebaseUser.uid,
-        )
+        .where("userId", isEqualTo: firebaseUser.uid)   /// [DartDataClass->user.dart/property]
         .get();
     /// [取得結果documentにデータがある＝長さがある]
     /// [データ存在するか否かチェックして,repositoryにreturn]
-    if(query.docs.length >= 0) {
+    if (query.docs.length > 0) {
       return true;
-    } else {
-      return false;
     }
+    return false;
   }
 
 
+
   /// [crud: Create: firestore登録用]
-  Future<void> isertUser(User user) async {
+  Future<void> insertUser(User user) async {
     await _db.collection("users").doc(user.userId).set(user.toMap());
   }
 
 
+
   /// [crud: Read: ]
-  Future<User> getInfoFromDbById(String userId) async {
+  Future<User> getUserInfoFromDbById(String userId) async {
     final query = await _db.collection("users")
-        .where(
-          "userId",
-          isEqualTo: userId,
-        )
+        .where("userId", isEqualTo: userId)
         .get();
     return User.fromMap(query.docs[0].data());
     // return User.fromMap(query.docs[0].data);
   }
-
 
 
 
