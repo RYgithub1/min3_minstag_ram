@@ -28,6 +28,8 @@ dependencies:
   font_awesome_flutter: ^8.11.0
   toast: ^0.1.5
   image_picker: ^0.6.7+22
+  geolocator: ^6.1.14
+  geocoding: ^1.0.5
 
 
 # For Firebase packages
