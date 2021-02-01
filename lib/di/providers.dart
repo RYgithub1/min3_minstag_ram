@@ -1,4 +1,5 @@
 import 'package:min3_minstag_ram/model/database/database_manager.dart';
+import 'package:min3_minstag_ram/model/location/location_manager.dart';
 import 'package:min3_minstag_ram/model/repository/post_repository.dart';
 import 'package:min3_minstag_ram/model/repository/user_repository.dart';
 import 'package:min3_minstag_ram/viewmodel/login_view_model.dart';
@@ -26,6 +27,10 @@ List<SingleChildWidget> independentModels = [
     create: (_) => DatabaseManager(),
     // dispose: xxx,
   ),
+  /// [LocationManager独立しているゆえ -> PostRepositoryが使用]
+  Provider<LocationManager>(
+    create: (_) => LocationManager(),
+  ),
 
 
 
@@ -42,8 +47,14 @@ List<SingleChildWidget> dependentModels = [
       dbManager: dbManager,   /// [DI,namedPara]
     ),
   ),
-  ProxyProvider<DatabaseManager, PostRepository>(
-    update: (_, dbManager, repo) => PostRepository(
+  // ProxyProvider<DatabaseManager, PostRepository>(
+  //   update: (_, dbManager, repo) => PostRepository(),
+  // ),
+  /// [PostRepository()は複数依存になり]
+  ProxyProvider2<DatabaseManager, LocationManager, PostRepository>(
+    update: (_, dbManager, locationManager, repo) => PostRepository(
+      dbManager: dbManager,
+      locationManager: locationManager,
     ),
   ),
 
