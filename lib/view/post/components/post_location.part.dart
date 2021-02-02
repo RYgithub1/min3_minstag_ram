@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:min3_minstag_ram/data_models/location.dart';
 import 'package:min3_minstag_ram/generated/l10n.dart';
 import 'package:min3_minstag_ram/view/common/style.dart';
+import 'package:min3_minstag_ram/view/post/screens/map_screen.dart';
 import 'package:min3_minstag_ram/viewmodel/post_view_model.dart';
 import 'package:provider/provider.dart';
 
@@ -26,7 +27,7 @@ class PostLocationPart extends StatelessWidget {
         subtitle: _latLngPart(postViewModel.location, context),
         trailing: IconButton(
           icon: FaIcon(FontAwesomeIcons.mapMarkerAlt),
-          onPressed: null,
+          onPressed: () => _openMapScreen(context, postViewModel.location),
         ),
       ),
     );
@@ -52,6 +53,10 @@ class PostLocationPart extends StatelessWidget {
         Text(location.longitude.toStringAsFixed(2)),
       ],
     );
+  }
+
+  _openMapScreen(BuildContext context, Location location) {
+    Navigator.push(context, MaterialPageRoute(builder: (_) => MapScreen(location: location)));
   }
 
 
