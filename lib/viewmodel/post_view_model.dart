@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:min3_minstag_ram/data_models/location.dart';
 import 'package:min3_minstag_ram/model/repository/post_repository.dart';
@@ -21,6 +20,8 @@ class PostViewModel extends ChangeNotifier {
   File imageFile;   /// [R->VM: 結果取得 -> notify用]
 
   Location location;
+  String locationString = "";
+
 
 
   Future<void> pickImage(UploadType uploadType) async {
@@ -33,7 +34,9 @@ class PostViewModel extends ChangeNotifier {
 
 
     location = await postRepository.getCurrentLocation();
-
+    /// [location格納用の作成]
+    locationString = _toLocationString(location);
+    print("comm002: locationString: $locationString");
 
 
 
@@ -44,12 +47,14 @@ class PostViewModel extends ChangeNotifier {
     notifyListeners();
 
 
-
-
-
   }
 
 
+
+
+  String _toLocationString(Location location) {
+    return location.country + " " + location.state + " " + location.city;
+  }
 
 
 }

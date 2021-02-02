@@ -14,14 +14,11 @@ dependencies:
   cupertino_icons:
   flutter_launcher_icons: ^0.8.1
   # Firebase:|>
-  firebase_core: ^0.5.3
-  cloud_firestore: ^0.14.0+2
-  firebase_storage: ^5.2.0
-  firebase_auth:  ^0.18.4+1
-  firebase_analytics: ^6.2.0
-  firebase_auth_web: ^0.3.2+3
-  intl: ^0.17.0-nullsafety.2
-  path: ^1.8.0-nullsafety.1
+  firebase_core: ^0.7.0
+  cloud_firestore: ^0.16.0
+  firebase_storage: ^7.0.0
+  firebase_auth: ^0.20.0+1
+  firebase_analytics: ^7.0.1
   # >|
   google_sign_in: ^4.5.9
   provider: ^4.3.3
@@ -31,10 +28,6 @@ dependencies:
   geolocator: ^6.1.14
   geocoding: ^1.0.5
 
-
-# For Firebase packages
-dependency_overrides:
-  intl: 0.17.0-nullsafety.2
 
 
 dev_dependencies:

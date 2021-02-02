@@ -22,15 +22,16 @@ class LocationManager {
     final placeMark = placeMarks.first;
     /// [geoCodingのplaceMarkクラスをLocationにconvertして返す]
     return Future.value(  convert(placeMark, position.latitude, position.longitude)  );
-
   }
+
 
   Location convert(geoCoding.Placemark placeMark, double latitude, double longitude) {
     return Location(
       latitude: latitude,
       longitude: longitude,
       country: placeMark.country,
-
+      state: placeMark.administrativeArea,
+      city: placeMark.locality,
     );
   }
 

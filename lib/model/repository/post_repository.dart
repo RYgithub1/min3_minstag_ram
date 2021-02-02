@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
+import 'package:min3_minstag_ram/data_models/location.dart';
 import 'package:min3_minstag_ram/model/database/database_manager.dart';
 import 'package:min3_minstag_ram/model/location/location_manager.dart';
 import 'package:min3_minstag_ram/util/constants.dart';
@@ -29,7 +30,8 @@ class PostRepository {
 
   }
 
-  Future<void> getCurrentLocation() async {
+  Future<Location> getCurrentLocation() async {
+  // Future<void> getCurrentLocation() async {
     return await locationManager.getCurrentLocation();
   }
 

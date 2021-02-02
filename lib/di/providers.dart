@@ -32,8 +32,6 @@ List<SingleChildWidget> independentModels = [
     create: (_) => LocationManager(),
   ),
 
-
-
 ];
 
 
@@ -58,7 +56,6 @@ List<SingleChildWidget> dependentModels = [
     ),
   ),
 
-
 ];
 
 
@@ -75,6 +72,5 @@ List<SingleChildWidget> viewModels = [
       postRepository: Provider.of<PostRepository>(context, listen: false),
     ),
   ),
-
 
 ];

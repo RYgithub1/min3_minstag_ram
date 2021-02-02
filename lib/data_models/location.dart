@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 
 class Location {
   final double latitude;
-  final double longtitude;
+  final double longitude;
   final String country;
   final String state;
   final String city;
@@ -15,7 +15,7 @@ class Location {
   /// [Dart Data Class]
   Location({
     @required this.latitude,
-    @required this.longtitude,
+    @required this.longitude,
     @required this.country,
     @required this.state,
     @required this.city,
@@ -25,14 +25,14 @@ class Location {
 
   Location copyWith({
     double latitude,
-    double longtitude,
+    double longitude,
     String country,
     String state,
     String city,
   }) {
     return Location(
       latitude: latitude ?? this.latitude,
-      longtitude: longtitude ?? this.longtitude,
+      longitude: longitude ?? this.longitude,
       country: country ?? this.country,
       state: state ?? this.state,
       city: city ?? this.city,
@@ -42,7 +42,7 @@ class Location {
   Map<String, dynamic> toMap() {
     return {
       'latitude': latitude,
-      'longtitude': longtitude,
+      'longitude': longitude,
       'country': country,
       'state': state,
       'city': city,
@@ -54,7 +54,7 @@ class Location {
   
     return Location(
       latitude: map['latitude'],
-      longtitude: map['longtitude'],
+      longitude: map['longitude'],
       country: map['country'],
       state: map['state'],
       city: map['city'],
@@ -67,7 +67,7 @@ class Location {
 
   @override
   String toString() {
-    return 'Location(latitude: $latitude, longtitude: $longtitude, country: $country, state: $state, city: $city)';
+    return 'Location(latitude: $latitude, longitude: $longitude, country: $country, state: $state, city: $city)';
   }
 
   @override
@@ -76,7 +76,7 @@ class Location {
   
     return o is Location &&
       o.latitude == latitude &&
-      o.longtitude == longtitude &&
+      o.longitude == longitude &&
       o.country == country &&
       o.state == state &&
       o.city == city;
@@ -85,7 +85,7 @@ class Location {
   @override
   int get hashCode {
     return latitude.hashCode ^
-      longtitude.hashCode ^
+      longitude.hashCode ^
       country.hashCode ^
       state.hashCode ^
       city.hashCode;

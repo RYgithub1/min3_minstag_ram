@@ -1,6 +1,6 @@
 /// import 'package:firebase_auth/firebase_auth.dart';   [Destructive chanegs]
 import 'package:firebase_auth/firebase_auth.dart' as auth;   /// [FirebaseAuthのものは頭にautu.xxx必須で差別化]
-import 'package:flutter/services.dart';
+// import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:min3_minstag_ram/data_models/user.dart';
 import 'package:min3_minstag_ram/model/database/database_manager.dart';
