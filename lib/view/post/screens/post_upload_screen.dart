@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:min3_minstag_ram/generated/l10n.dart';
 import 'package:min3_minstag_ram/util/constants.dart';
 import 'package:min3_minstag_ram/view/post/components/post_caption_part.dart';
+import 'package:min3_minstag_ram/view/post/components/post_location.part.dart';
 import 'package:min3_minstag_ram/viewmodel/post_view_model.dart';
 import 'package:provider/provider.dart';
 
@@ -39,19 +40,21 @@ class PostUploadScreen extends StatelessWidget {
                   : IconButton(icon: Icon(Icons.done), onPressed: null),   /// [Dialog]
             ],
           ),
-          body: model.isProcessing
-              ? Center(child: CircularProgressIndicator())
-              : model.isImagePicked
-                  ? Column(
-                    children: <Widget>[
-                      Divider(),
-                      PostCaptionPart(from: PostCaptionOpenMode.FROM_POST),
-                      Divider(),
-                      // PostLocationPart(),
-                      Divider(),
-                    ],
-                  )
-                  : Container(),
+          body: Center(
+            child: model.isProcessing
+                ? Center(child: CircularProgressIndicator())
+                : model.isImagePicked
+                    ? Column(
+                      children: <Widget>[
+                        Divider(),
+                        PostCaptionPart(from: PostCaptionOpenMode.FROM_POST),
+                        Divider(),
+                        PostLocationPart(),
+                        Divider(),
+                      ],
+                    )
+                    : Container(),
+          ),
         );
       },
     );
