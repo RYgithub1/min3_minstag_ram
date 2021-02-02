@@ -4,6 +4,7 @@ import 'package:min3_minstag_ram/view/post/screens/enlarge_image_screen.dart';
 import 'package:min3_minstag_ram/viewmodel/post_view_model.dart';
 import 'package:provider/provider.dart';
 import 'hero_image.dart';
+import 'post_caption_input_text_field.dart';
 
 
 
@@ -26,7 +27,7 @@ class PostCaptionPart extends StatelessWidget {
           image: _image,
           onTap: () => _displayLargeImage(context, _image),
         ),
-        // title: PostCaptionInputTextField(),
+        title: PostCaptionInputTextField(),
       );
     } else {   /// [from == PostCaptionOpenMode.FROM_FEED]
       return Container();

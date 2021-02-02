@@ -22,6 +22,8 @@ class PostViewModel extends ChangeNotifier {
   Location location;
   String locationString = "";
 
+  String caption;
+
 
 
   Future<void> pickImage(UploadType uploadType) async {
