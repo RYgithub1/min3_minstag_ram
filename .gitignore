@@ -51,4 +51,4 @@ android/app/src/main/AndroidManifest.xml
 # iOS(comm)
 GoogleService-Info.plist
 Info.plist
-iOS/Runner/AppDelegate
+ios/Runner/AppDelegate.swift
