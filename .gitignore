@@ -47,6 +47,7 @@ app.*.map.json
 
 # Android
 google-services.json
+android/app/src/main/AndroidManifest.xml
 # iOS(comm)
 GoogleService-Info.plist
 Info.plist
