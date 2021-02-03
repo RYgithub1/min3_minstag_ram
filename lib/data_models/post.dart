@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 
 
-
 /// [postデータ格納用クラス]
 class Post {
   String postId;
@@ -13,8 +12,7 @@ class Post {
   String locationString;
   double latitude;
   double longitude;
-  DateTime postDataTime;
-
+  DateTime postDateTime;
 
 
   /// [Dart Data Class]
@@ -27,7 +25,7 @@ class Post {
     @required this.locationString,
     @required this.latitude,
     @required this.longitude,
-    @required this.postDataTime,
+    @required this.postDateTime,
   });
 
 
@@ -42,7 +40,7 @@ class Post {
     String locationString,
     double latitude,
     double longitude,
-    DateTime postDataTime,
+    DateTime postDateTime,
   }) {
     return Post(
       postId: postId ?? this.postId,
@@ -53,7 +51,7 @@ class Post {
       locationString: locationString ?? this.locationString,
       latitude: latitude ?? this.latitude,
       longitude: longitude ?? this.longitude,
-      postDataTime: postDataTime ?? this.postDataTime,
+      postDateTime: postDateTime ?? this.postDateTime,
     );
   }
 
@@ -67,9 +65,9 @@ class Post {
       'locationString': locationString,
       'latitude': latitude,
       'longitude': longitude,
-      // 'postDataTime': postDataTime?.millisecondsSinceEpoch,
-      /// [Type違いエラー(parseする): DateTimeType <-> StringType]
-      'postDataTime': postDataTime.toIso8601String(),
+      // 'postDateTime': postDateTime?.millisecondsSinceEpoch,
+      ///[Type違いエラー(parseする): DateTimeType <-> StringType]
+      'postDateTime': postDateTime.toIso8601String(),
     };
   }
 
@@ -85,11 +83,11 @@ class Post {
       locationString: map['locationString'],
       latitude: map['latitude'],
       longitude: map['longitude'],
-      // postDataTime: DateTime.fromMillisecondsSinceEpoch(map['postDataTime']),
+      // postDateTime: DateTime.fromMillisecondsSinceEpoch(map['postDateTime']),
       /// [Type違いエラー(parseする): DateTimeType <-> StringType]
-      postDataTime: map['postDataTime'] == null
+      postDateTime: map['postDateTime'] == null
           ? null
-          : DateTime.parse(map['postDataTime']),
+          : DateTime.parse(map['postDateTime']),
     );
   }
 
@@ -99,7 +97,7 @@ class Post {
 
   @override
   String toString() {
-    return 'Post(postId: $postId, userId: $userId, imageUrl: $imageUrl, imageStoragePath: $imageStoragePath, caption: $caption, locationString: $locationString, latitude: $latitude, longitude: $longitude, postDataTime: $postDataTime)';
+    return 'Post(postId: $postId, userId: $userId, imageUrl: $imageUrl, imageStoragePath: $imageStoragePath, caption: $caption, locationString: $locationString, latitude: $latitude, longitude: $longitude, postDateTime: $postDateTime)';
   }
 
   @override
@@ -115,7 +113,7 @@ class Post {
       o.locationString == locationString &&
       o.latitude == latitude &&
       o.longitude == longitude &&
-      o.postDataTime == postDataTime;
+      o.postDateTime == postDateTime;
   }
 
   @override
@@ -128,6 +126,6 @@ class Post {
       locationString.hashCode ^
       latitude.hashCode ^
       longitude.hashCode ^
-      postDataTime.hashCode;
+      postDateTime.hashCode;
   }
 }

@@ -59,6 +59,7 @@ class DatabaseManager {
   /// [post -> Firestore保存]
   Future<void> insertPost(Post post) async {
     await _db.collection("posts").doc(post.postId).set(post.toMap());
+    print("comm600: DatabaseManager: insertPost: xxx");
   }
 
 
@@ -72,9 +73,10 @@ class DatabaseManager {
     /// [userIdで対象特定。Firestore/users/ドキュメント/followers&&followingsを作成格納]
     var userIds = await getFollowingUserIds(userId);   /// [自分がフォローしているuserId]
     userIds.add(userId);   /// [に、自分のuserID、を加える]
-
-    /// [データ取得(1)]
+    print("comm601: getPostsMineAndFollowings: userIds: $userIds");
+    /// [========== データ取得(1) ==========]
     var results = List<Post>();
+    print("comm602: getPostsMineAndFollowings: results: $results");
     await _db.collection("posts")
         .where("userId", whereIn: userIds)   /// [キーが複数: post取得、但しuserIdsリストに入っているuserIdのみ]
         .orderBy("postDateTime", descending: true)   /// [降順]
@@ -84,9 +86,9 @@ class DatabaseManager {
             results.add(Post.fromMap(element.data()));   /// [Map型 -> モデルクラス(Post)へ変換]
           });
         });
-    print("comm601: getPostsMineAndFollowings: results: $results");
+    print("comm603: getPostsMineAndFollowings: results: $results");
     return results;
-    /// [データ取得(2): whereInは最大 10 個までの比較値しかサポートしていない件ゆえ書き換え]
+    /// [========== データ取得(2): whereInは最大 10 個までの比較値しかサポートしていない件ゆえ書き換え ==========]
     /*
     var results = List<Post>();
     await Future.forEach(_, (id) async {
@@ -114,6 +116,7 @@ class DatabaseManager {
     query.docs.forEach((id) {
       userIds.add(id.data()[userId]);
     });
+    print("comm605: getFollowingUserIds: userIds: $userIds");
     return userIds;
   }
 

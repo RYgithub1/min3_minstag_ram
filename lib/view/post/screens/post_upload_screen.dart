@@ -79,7 +79,7 @@ class PostUploadScreen extends StatelessWidget {
 
 
   void _post(BuildContext context) async {
-    print("comm600: PostUploadScreen: _post:");
+    print("comm600: PostUploadScreen: $_post:");
     final postViewModel = Provider.of<PostViewModel>(context, listen: false);
     await postViewModel.post();
     /// [終了時に画面閉じる]

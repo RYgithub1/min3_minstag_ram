@@ -48,7 +48,7 @@ class PostRepository {
     /// Firestore/Storage: 一意のID: UUID
     final storageId = Uuid().v1();
     final imageUrl = await dbManager.uploadImageToStorage(imageFile, storageId);
-    print("PostRepository: storageImageUrl: $imageUrl");
+    print("comm700: PostRepository: storageImageUrl: $imageUrl");
     /// [post: Firestoreに登録したいもの]
     final post = Post(
       postId: Uuid().v1(),
@@ -59,8 +59,9 @@ class PostRepository {
       locationString: locationString,
       latitude: location.latitude,
       longitude: location.longitude,
-      postDataTime: DateTime.now(),
+      postDateTime: DateTime.now(),
     );
+    print("comm700: PostRepository: post: $post");
     await dbManager.insertPost(post);
   }
 
