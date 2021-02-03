@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:min3_minstag_ram/generated/l10n.dart';
 import 'package:min3_minstag_ram/util/constants.dart';
+import 'package:min3_minstag_ram/view/common/confirm_dialog.dart';
 import 'package:min3_minstag_ram/view/post/components/post_caption_part.dart';
 import 'package:min3_minstag_ram/view/post/components/post_location.part.dart';
 import 'package:min3_minstag_ram/viewmodel/post_view_model.dart';
@@ -36,8 +37,18 @@ class PostUploadScreen extends StatelessWidget {
                 : Text(S.of(context).post),
             actions: <Widget>[
               (model.isProcessing || !model.isImagePicked)  /// [処理中||画像取得できず]
-                  ? IconButton(icon: Icon(Icons.close), onPressed: () => _cancelPost(context))   /// [VoidCallBack: () =>, 必要]
-                  : IconButton(icon: Icon(Icons.done), onPressed: null),   /// [TODO: Dialog]
+                  ? IconButton(icon: Icon(Icons.close), onPressed: () => _cancelPost(context))   /// [()=>]
+                  : IconButton(icon: Icon(Icons.done), onPressed: () => showConfirmDialog(   /// [()=>: メソッド参照でない場合VoidCallBack必要]
+                       /// [Dialog]
+                      context: context,
+                      title: S.of(context).post,
+                      content: S.of(context).postConfirm,
+                      onConfirmed: (isConfirmed) {
+                        if (isConfirmed){
+                          _post(context);
+                        }
+                      },
+                  )),
             ],
           ),
           body: model.isProcessing
@@ -61,8 +72,17 @@ class PostUploadScreen extends StatelessWidget {
 
 
   _cancelPost(BuildContext context) {
-    // final postViewModel = Provider.of<PostViewModel>(context, listen: false);
-    // postViewModel.cancelPost();
+    final postViewModel = Provider.of<PostViewModel>(context, listen: false);
+    postViewModel.cancelPost();
+    Navigator.pop(context);
+  }
+
+
+  void _post(BuildContext context) async {
+    print("comm600: PostUploadScreen: _post:");
+    final postViewModel = Provider.of<PostViewModel>(context, listen: false);
+    await postViewModel.post();
+    /// [終了時に画面閉じる]
     Navigator.pop(context);
   }
 

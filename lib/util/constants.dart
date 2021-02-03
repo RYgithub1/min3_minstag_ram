@@ -11,3 +11,11 @@ enum PostCaptionOpenMode {
   FROM_POST,
   FROM_FEED,
 }
+
+
+
+/// [Feed: fromBNB or fromProfileScreen]
+enum FeedMode {
+  FROM_FEED,    /// [自分とフォロー中のユーザー]
+  FROM_PROFILE,    /// [プロフィール画面に表示されるユーザーのみ]
+}

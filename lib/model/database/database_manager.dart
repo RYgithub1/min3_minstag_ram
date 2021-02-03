@@ -1,5 +1,9 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:min3_minstag_ram/data_models/post.dart';
 import 'package:min3_minstag_ram/data_models/user.dart';
 
 
@@ -42,6 +46,20 @@ class DatabaseManager {
         .get();
     return User.fromMap(query.docs[0].data());
     // return User.fromMap(query.docs[0].data);
+  }
+
+
+  /// [void -> String: Future<S>]
+  Future<String> uploadImageToStorage(File imageFile, String storageId) async {
+    final storageRef = FirebaseStorage.instance.ref().child(storageId);
+    final uploadTask = storageRef.putFile(imageFile);
+    return uploadTask.then( (TaskSnapshot snapshot) => snapshot.ref.getDownloadURL() );   /// [Future.then().catchError()]
+  }
+
+
+  /// [post -> Firestore保存]
+  Future<void> insertPost(Post post) async {
+    await _db.collection("post").doc(post.postId).set(post.toMap());
   }
 
 

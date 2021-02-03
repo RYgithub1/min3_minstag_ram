@@ -67,4 +67,31 @@ class PostViewModel extends ChangeNotifier {
   }
 
 
+
+  Future<void> post() async {
+    isProcessing = true;
+    notifyListeners();
+    /// [渡したい物を追記する]
+    await postRepository.post(
+      UserRepository.currentUser,
+      imageFile,
+      caption,
+      location,
+      locationString,
+    );
+    /// [Upload終わったら]
+    isProcessing = false;
+    isImagePicked = false;
+    notifyListeners();
+  }
+
+
+  /// [Circularの停止]
+  void cancelPost() {
+    isProcessing = false;
+    isImagePicked = false;
+    notifyListeners();
+  }
+
+
 }

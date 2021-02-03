@@ -1,9 +1,12 @@
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:min3_minstag_ram/data_models/location.dart';
+import 'package:min3_minstag_ram/data_models/post.dart';
+import 'package:min3_minstag_ram/data_models/user.dart';
 import 'package:min3_minstag_ram/model/database/database_manager.dart';
 import 'package:min3_minstag_ram/model/location/location_manager.dart';
 import 'package:min3_minstag_ram/util/constants.dart';
+import 'package:uuid/uuid.dart';
 
 
 
@@ -34,10 +37,32 @@ class PostRepository {
     return await locationManager.getCurrentLocation();
   }
 
+
   Future<Location> updateLocation(double latitude, double longitude) async {
     return await locationManager.updateLocation(latitude, longitude);
   }
 
+
+  /// [postするだけなので<void>に修正]
+  Future<void> post(User currentUser, File imageFile, String caption, Location location, String locationString) async {
+    /// Firestore/Storage: 一意のID: UUID
+    final storageId = Uuid().v1();
+    final imageUrl = await dbManager.uploadImageToStorage(imageFile, storageId);
+    print("PostRepository: storageImageUrl: $imageUrl");
+    /// [post: Firestoreに登録したいもの]
+    final post = Post(
+      postId: Uuid().v1(),
+      userId: currentUser.userId,
+      imageUrl: imageUrl,
+      imageStoragePath: storageId,
+      caption: caption,
+      locationString: locationString,
+      latitude: location.latitude,
+      longitude: location.longitude,
+      postDataTime: DateTime.now(),
+    );
+    await dbManager.insertPost(post);
+  }
 
 
 }
