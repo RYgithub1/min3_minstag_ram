@@ -33,28 +33,26 @@ class PostUploadScreen extends StatelessWidget {
                 : IconButton(icon: Icon(Icons.arrow_back), onPressed: () => _cancelPost(context)),   /// [VoidCallBack: () =>, 必要]
             title: model.isProcessing
                 ? Text(S.of(context).underProcessing)
-                : Text(S.of(context).postConfirm),
+                : Text(S.of(context).post),
             actions: <Widget>[
               (model.isProcessing || !model.isImagePicked)  /// [処理中||画像取得できず]
                   ? IconButton(icon: Icon(Icons.close), onPressed: () => _cancelPost(context))   /// [VoidCallBack: () =>, 必要]
-                  : IconButton(icon: Icon(Icons.done), onPressed: null),   /// [Dialog]
+                  : IconButton(icon: Icon(Icons.done), onPressed: null),   /// [TODO: Dialog]
             ],
           ),
-          body: Center(
-            child: model.isProcessing
-                ? Center(child: CircularProgressIndicator())
-                : model.isImagePicked
-                    ? Column(
-                      children: <Widget>[
-                        Divider(),
-                        PostCaptionPart(from: PostCaptionOpenMode.FROM_POST),
-                        Divider(),
-                        PostLocationPart(),
-                        Divider(),
-                      ],
-                    )
-                    : Container(),
-          ),
+          body: model.isProcessing
+              ? Center(child: CircularProgressIndicator())
+              : model.isImagePicked
+                  ? Column(
+                    children: <Widget>[
+                      Divider(),
+                      PostCaptionPart(from: PostCaptionOpenMode.FROM_POST),
+                      Divider(),
+                      PostLocationPart(),
+                      Divider(),
+                    ],
+                  )
+                  : Container(),
         );
       },
     );
@@ -63,6 +61,8 @@ class PostUploadScreen extends StatelessWidget {
 
 
   _cancelPost(BuildContext context) {
+    // final postViewModel = Provider.of<PostViewModel>(context, listen: false);
+    // postViewModel.cancelPost();
     Navigator.pop(context);
   }
 

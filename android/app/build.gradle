@@ -26,8 +26,6 @@ apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
-    // compileSdkVersion 28
-    // compileSdkVersion 29
     compileSdkVersion 30
 
     sourceSets {
@@ -37,7 +35,6 @@ android {
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "com.example.min3_minstag_ram"
-        // minSdkVersion 16
         minSdkVersion 23
         targetSdkVersion 30
 

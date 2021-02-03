@@ -15,9 +15,10 @@ class PostRepository {
   PostRepository({this.dbManager, this.locationManager});
 
 
+
   Future<File> pickImage(UploadType uploadType) async {
     final imagePicker = ImagePicker();
-    if(uploadType == UploadType.GALLERY) {
+    if (uploadType == UploadType.GALLERY) {
       // return await imagePicker.getImage(source: ImageSource.gallery);
       /// [A value of type 'PickedFile' can't be returned from method 'pickImage' because it has a return type of 'Future<File>'.]
       final pickedImage = await imagePicker.getImage(source: ImageSource.gallery);
@@ -26,16 +27,16 @@ class PostRepository {
       final pickedImage = await imagePicker.getImage(source: ImageSource.camera);
       return File(pickedImage.path);
     }
-
-
   }
 
+
   Future<Location> getCurrentLocation() async {
-  // Future<void> getCurrentLocation() async {
     return await locationManager.getCurrentLocation();
   }
 
-
+  Future<Location> updateLocation(double latitude, double longitude) async {
+    return await locationManager.updateLocation(latitude, longitude);
+  }
 
 
 

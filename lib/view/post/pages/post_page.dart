@@ -9,8 +9,6 @@ import 'package:min3_minstag_ram/view/post/screens/post_upload_screen.dart';
 
 
 class PostPage extends StatelessWidget {
-  const PostPage({Key key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

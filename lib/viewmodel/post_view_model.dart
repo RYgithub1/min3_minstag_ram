@@ -22,33 +22,31 @@ class PostViewModel extends ChangeNotifier {
   Location location;
   String locationString = "";
 
-  String caption;
+  // String caption;
+  String caption ="";
 
 
 
   Future<void> pickImage(UploadType uploadType) async {
     isImagePicked = false;
-    isProcessing =  true;
+    isProcessing = true;
     notifyListeners();
 
     imageFile = await postRepository.pickImage(uploadType);
-    print("comm001: PostViewModel: pickImage: ${imageFile.path}");
-
+    print("comm301: PostViewModel: pickImage: ${imageFile.path}");
 
     location = await postRepository.getCurrentLocation();
+    print("comm302: PostViewModel: pickImage: ${imageFile.path}");
     /// [location格納用の作成]
     locationString = _toLocationString(location);
-    print("comm002: locationString: $locationString");
-
+    print("comm303: locationString: $locationString");
 
 
 
     /// [取得できていればtrue]
-    if(imageFile != null) isImagePicked = true;
-    isProcessing =  false;
+    if (imageFile != null) isImagePicked = true;
+    isProcessing = false;
     notifyListeners();
-
-
   }
 
 
@@ -56,6 +54,16 @@ class PostViewModel extends ChangeNotifier {
 
   String _toLocationString(Location location) {
     return location.country + " " + location.state + " " + location.city;
+  }
+
+
+
+  Future<void> updateLocation(double latitude, double longitude) async {
+    /// [locationをアップデートする]
+    location = await postRepository.updateLocation(latitude, longitude);
+    /// [locationアップデート後にlocationString更新]
+    locationString = _toLocationString(location);
+    notifyListeners();
   }
 
 

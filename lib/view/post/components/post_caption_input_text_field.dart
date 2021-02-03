@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:min3_minstag_ram/generated/l10n.dart';
+import 'package:min3_minstag_ram/util/constants.dart';
 import 'package:min3_minstag_ram/view/common/style.dart';
 import 'package:min3_minstag_ram/viewmodel/post_view_model.dart';
 import 'package:provider/provider.dart';
@@ -8,7 +9,11 @@ import 'package:provider/provider.dart';
 
 
 class PostCaptionInputTextField extends StatefulWidget {
-  // PostCaptionInputTextField({Key key}) : super(key: key);
+  /// [caption dataをpassするのに必要]
+  final String captionBeforeUpdated;
+  final PostCaptionOpenMode from;
+  PostCaptionInputTextField({this.captionBeforeUpdated, this.from});
+
   @override
   _PostCaptionInputTextFieldState createState() => _PostCaptionInputTextFieldState();
 }

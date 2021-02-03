@@ -56,7 +56,9 @@ class PostLocationPart extends StatelessWidget {
   }
 
   _openMapScreen(BuildContext context, Location location) {
-    Navigator.push(context, MaterialPageRoute(builder: (_) => MapScreen(location: location)));
+    Navigator.push(context, MaterialPageRoute(
+      builder: (_) => MapScreen(location: location),
+    ));
   }
 
 

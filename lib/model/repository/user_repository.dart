@@ -69,14 +69,15 @@ class UserRepository {
 
       /// [userのデータをとってくる(=Read)method: 戻り値は<User>]
       currentUser = await dbManager.getUserInfoFromDbById(firebaseUser.uid);
+      print("comm001: try");
       return true;
 
     } catch(error) {
     // } on PlatformException catch (error) {
-      print("comm02: error: UserRepository()/signIn(): ${error.toString()}");
+      print("comm002: error: UserRepository()/signIn(): ${error.toString()}");
       return false;
     } finally {
-      print("comm03: finally: UserRepository()/signIn()");
+      print("comm003: finally: UserRepository()/signIn()");
     }
   }
 

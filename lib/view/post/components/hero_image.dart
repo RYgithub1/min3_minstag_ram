@@ -15,9 +15,12 @@ class HeroImage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Hero(
       tag: "postImage",   /// [ポ: 受け渡し両側で同じtag指定]
-      child: InkWell(
-        onTap: onTap,
-        child: image,
+      child: Material(
+        color: Colors.white30,
+        child: InkWell(
+          onTap: onTap,
+          child: image,
+        ),
       ),
     );
   }
