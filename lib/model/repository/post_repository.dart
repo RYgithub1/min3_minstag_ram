@@ -65,4 +65,19 @@ class PostRepository {
   }
 
 
+
+  // Future<Post> getPosts(FeedMode feedMode) async {
+  /// [VM: List<Post> posts: Match Type]
+  Future<List<Post>> getPosts(FeedMode feedMode, User feedUser) async {
+    /// [feed画面への遷移2パターン]
+    if (feedMode == FeedMode.FROM_FEED) {
+      /// [R: 自分がフォローしているユーザーの投稿を取得]
+      return dbManager.getPostsMineAndFollowings(feedUser.userId);
+    } else {   /// [feedMode == FeedMode.FROM_PROFILE]
+      /// [R: プロフィール画面に表示されているユーザーの投稿を取得]
+      // return dbManager.getPostsByuser(feedUser.userId);
+    }
+  }
+
+
 }

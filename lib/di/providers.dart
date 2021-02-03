@@ -2,6 +2,7 @@ import 'package:min3_minstag_ram/model/database/database_manager.dart';
 import 'package:min3_minstag_ram/model/location/location_manager.dart';
 import 'package:min3_minstag_ram/model/repository/post_repository.dart';
 import 'package:min3_minstag_ram/model/repository/user_repository.dart';
+import 'package:min3_minstag_ram/viewmodel/feed_view_model.dart';
 import 'package:min3_minstag_ram/viewmodel/login_view_model.dart';
 import 'package:min3_minstag_ram/viewmodel/post_view_model.dart';
 import 'package:provider/provider.dart';
@@ -68,6 +69,12 @@ List<SingleChildWidget> viewModels = [
   ),
   ChangeNotifierProvider<PostViewModel>(
     create: (context) => PostViewModel(
+      userRepository: Provider.of<UserRepository>(context, listen: false),
+      postRepository: Provider.of<PostRepository>(context, listen: false),
+    ),
+  ),
+  ChangeNotifierProvider<FeedViewModel>(
+    create: (context) => FeedViewModel(
       userRepository: Provider.of<UserRepository>(context, listen: false),
       postRepository: Provider.of<PostRepository>(context, listen: false),
     ),

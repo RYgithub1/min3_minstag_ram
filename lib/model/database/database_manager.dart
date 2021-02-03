@@ -38,7 +38,6 @@ class DatabaseManager {
   }
 
 
-
   /// [crud: Read: ]
   Future<User> getUserInfoFromDbById(String userId) async {
     final query = await _db.collection("users")
@@ -59,7 +58,63 @@ class DatabaseManager {
 
   /// [post -> Firestore保存]
   Future<void> insertPost(Post post) async {
-    await _db.collection("post").doc(post.postId).set(post.toMap());
+    await _db.collection("posts").doc(post.postId).set(post.toMap());
+  }
+
+
+
+
+  /// [db: 自分がフォローしているユーザーの投稿を取得]
+  Future<List<Post>> getPostsMineAndFollowings(String userId) async {
+    /// [アプリダウン防ぐため: 投稿データ無いなら、return List()、返して終了]
+    final query = await _db.collection("posts").get();
+    if (query.docs.length == 0) return List();
+    /// [userIdで対象特定。Firestore/users/ドキュメント/followers&&followingsを作成格納]
+    var userIds = await getFollowingUserIds(userId);   /// [自分がフォローしているuserId]
+    userIds.add(userId);   /// [に、自分のuserID、を加える]
+
+    /// [データ取得(1)]
+    var results = List<Post>();
+    await _db.collection("posts")
+        .where("userId", whereIn: userIds)   /// [キーが複数: post取得、但しuserIdsリストに入っているuserIdのみ]
+        .orderBy("postDateTime", descending: true)   /// [降順]
+        .get()   /// [取得]
+        .then((value) {   /// [get(): Futureゆえthen]
+          value.docs.forEach((element) {   /// [docs << QueryDocumentSnapshot]
+            results.add(Post.fromMap(element.data()));   /// [Map型 -> モデルクラス(Post)へ変換]
+          });
+        });
+    print("comm601: getPostsMineAndFollowings: results: $results");
+    return results;
+    /// [データ取得(2): whereInは最大 10 個までの比較値しかサポートしていない件ゆえ書き換え]
+    /*
+    var results = List<Post>();
+    await Future.forEach(_, (id) async {
+      await _db.collection("post").where("userId", isEqualTo: id).get().then((value) {
+        value.docs.forEach((element) {
+          results.add(Post.fromMap(element.data()));
+        });
+      });
+    });
+    return results;
+    */
+  }
+
+
+
+  /// [db: プロフィール画面に表示されているユーザーの投稿を取得]
+  Future<List<Post>> getPostsByuser(String userId) {}
+
+
+
+  Future<List<String>> getFollowingUserIds(String userId) async {
+    final query = await _db.collection("users").doc(userId).collection("followings").get();   /// [followingsをここで作成]
+    if (query.docs.length == 0) return List();
+    var userIds = List<String>();
+    query.docs.forEach((id) {
+      userIds.add(id.data()[userId]);
+    });
+    return userIds;
   }
 
 
