@@ -10,10 +10,14 @@ import 'package:min3_minstag_ram/view/login/screens/login_screen.dart';
 import 'package:min3_minstag_ram/viewmodel/login_view_model.dart';
 import 'package:provider/provider.dart';
 
+import 'package:timeago/timeago.dart' as timeAgo;   // TopLevelFunctionで出てきてしまう -> as xxx
 
 
 
 void main() async {
+  timeAgo.setLocaleMessages("ja", timeAgo.JaMessages());    /// [TimeStamp: timeAgo]
+
+
   /// [firebase_core(ver.0.5.0以降): Distructive changes]
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();

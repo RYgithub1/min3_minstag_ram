@@ -40,10 +40,11 @@ class FeedPostTile extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
-                FeedPostHeaderPart(),
+                // FeedPostHeaderPart(postUser: postUser, post: post, currentUser: currentUser, feedMode: feedMode),
+                FeedPostHeaderPart(postUser: postUser, post: post, currentUser: currentUser),
                 ImageFromUrlPart(imageUrl: post.imageUrl),
                 FeedPostLikesPart(),
-                FeedPostCommentsPart(),
+                FeedPostCommentsPart(postUser: postUser, post: post),
               ],
             );
           } else {

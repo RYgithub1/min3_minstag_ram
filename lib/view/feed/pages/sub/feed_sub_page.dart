@@ -27,9 +27,12 @@ class FeedSubPage extends StatelessWidget {
           return ListView.builder(
             itemCount: model.posts.length,
             itemBuilder: (context, index) {
-              return FeedPostTile(
-                feedMode: feedMode,
-                post: model.posts[index],
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: FeedPostTile(
+                  feedMode: feedMode,
+                  post: model.posts[index],
+                ),
               );
             },
           );

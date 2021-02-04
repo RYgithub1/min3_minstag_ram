@@ -30,6 +30,7 @@ dependencies:
   google_maps_flutter: ^1.1.0
   uuid: ^2.2.2
   cached_network_image: ^2.4.1
+  timeago: ^2.0.29
 
 
 

@@ -27,9 +27,20 @@ class UserCard extends StatelessWidget {
       splashColor: Colors.blueGrey,
       onTap: onTap,
       child: ListTile(
-        leading: CirclePhoto(photoUrl: photoUrl),
-        title: Text(title, style: userCardTitleTextStyle),
-        subtitle: Text(subTitle, style: userCardSubTitleTextStyle),
+        // leading: CirclePhoto(photoUrl: photoUrl),
+        leading: CirclePhoto(
+          photoUrl: photoUrl,
+          /// [場合分け<bool>isImageFromFile渡す必要: ローカル端末からCirclePhoto()]
+          isImageFromFile: false,
+        ),
+        title: Text(
+          title,
+          style: userCardTitleTextStyle,
+        ),
+        subtitle: Text(
+          subTitle,
+          style: userCardSubTitleTextStyle,
+        ),
         trailing: trailing,
       )
     );
