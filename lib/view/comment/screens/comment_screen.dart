@@ -33,7 +33,7 @@ class CommentScreen extends StatelessWidget {
             ),
             
             /// [対象post/feedへのコメントの追加: TextFieldが変更]
-            CommentInputPart(),
+            CommentInputPart(post: post),
           ],
         ),
       ),

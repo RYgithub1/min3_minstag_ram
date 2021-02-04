@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
+import 'package:min3_minstag_ram/data_models/comment.dart';
 import 'package:min3_minstag_ram/data_models/location.dart';
 import 'package:min3_minstag_ram/data_models/post.dart';
 import 'package:min3_minstag_ram/data_models/user.dart';
@@ -85,6 +86,21 @@ class PostRepository {
   /// [post->feed: Update: R:  Updateなので返り値なし]
   Future<void> updatePost(Post updatePost) async {
     return await dbManager.updatePost(updatePost);
+  }
+
+
+
+  Future<void> postComment(Post post, User commentUser, String commentString) async {
+    /// [必要なComment...DartDataClassに代入して丸ごと渡して、Firestore保存]
+    final comment = Comment(
+      commentId: Uuid().v1(),   /// [任意16桁1意]
+      postId: post.postId,
+      commentUserId: commentUser.userId,
+      comment: commentString,
+      commentDateTime: DateTime.now(),
+    );
+
+    await dbManager.postComment(comment);
   }
 
 

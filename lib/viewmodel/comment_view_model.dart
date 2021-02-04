@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:min3_minstag_ram/data_models/post.dart';
 import 'package:min3_minstag_ram/data_models/user.dart';
 import 'package:min3_minstag_ram/model/repository/post_repository.dart';
 import 'package:min3_minstag_ram/model/repository/user_repository.dart';
@@ -24,6 +25,15 @@ class CommentViewModel extends ChangeNotifier {
 
   String comment = "";
 
+
+
+  Future<void> postComment(Post post) async {
+    await postRepository.postComment(post, currentUser, comment);   /// [Comment()/commentId = currentUserのId]
+    notifyListeners();
+
+
+
+  }
 
 
 }

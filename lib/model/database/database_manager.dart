@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:min3_minstag_ram/data_models/comment.dart';
 import 'package:min3_minstag_ram/data_models/post.dart';
 import 'package:min3_minstag_ram/data_models/user.dart';
 
@@ -129,6 +130,12 @@ class DatabaseManager {
   Future<void> updatePost(Post updatePost) async {
     final reference = _db.collection("posts").doc(updatePost.postId);
     await reference.update(updatePost.toMap());
+  }
+
+
+  /// [postに紐づくコメント投稿]
+  Future<void> postComment(Comment comment) async {
+    await _db.collection("comments").doc(comment.commentId).set(comment.toMap());   /// [doc(任意16桁一意)]
   }
 
 
