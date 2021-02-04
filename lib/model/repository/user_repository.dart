@@ -94,10 +94,12 @@ class UserRepository {
     );
   }
 
-  /// [feed_view.model.dart]
-  // Future<User> getUserById(String userId) async {
-  //   return await dbManager.getUserInfoFromDbById(userId);
-  // }
+
+
+  /// [Feed: FutureBuilder]
+  Future<User> getUserById(String userId) async {
+    return await dbManager.getUserInfoFromDbById(userId);
+  }
 
 
 }

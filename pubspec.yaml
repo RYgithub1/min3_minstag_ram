@@ -29,6 +29,7 @@ dependencies:
   geocoding: ^1.0.5
   google_maps_flutter: ^1.1.0
   uuid: ^2.2.2
+  cached_network_image: ^2.4.1
 
 
 

@@ -46,4 +46,11 @@ class FeedViewModel extends ChangeNotifier {
   }
 
 
+
+  /// [FutureBuilderなので戻り値で返す]
+  Future<User> getPostUserInfo(String userId) async {
+    return await userRepository.getUserById(userId);
+  }
+
+
 }
