@@ -2,6 +2,7 @@ import 'package:min3_minstag_ram/model/database/database_manager.dart';
 import 'package:min3_minstag_ram/model/location/location_manager.dart';
 import 'package:min3_minstag_ram/model/repository/post_repository.dart';
 import 'package:min3_minstag_ram/model/repository/user_repository.dart';
+import 'package:min3_minstag_ram/viewmodel/comment_view_model.dart';
 import 'package:min3_minstag_ram/viewmodel/feed_view_model.dart';
 import 'package:min3_minstag_ram/viewmodel/login_view_model.dart';
 import 'package:min3_minstag_ram/viewmodel/post_view_model.dart';
@@ -79,5 +80,12 @@ List<SingleChildWidget> viewModels = [
       postRepository: Provider.of<PostRepository>(context, listen: false),
     ),
   ),
+  ChangeNotifierProvider<CommentViewModel>(
+    create: (context) => CommentViewModel(
+      userRepository: Provider.of<UserRepository>(context, listen: false),
+      postRepository: Provider.of<PostRepository>(context, listen: false),
+    ),
+  ),
+
 
 ];

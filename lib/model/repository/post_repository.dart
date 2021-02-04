@@ -12,7 +12,6 @@ import 'package:uuid/uuid.dart';
 
 
 class PostRepository {
-
   final DatabaseManager dbManager;
   final LocationManager locationManager;
   PostRepository({this.dbManager, this.locationManager});
@@ -77,7 +76,15 @@ class PostRepository {
     } else {   /// [feedMode == FeedMode.FROM_PROFILE]
       /// [R: プロフィール画面に表示されているユーザーの投稿を取得]
       // return dbManager.getPostsByuser(feedUser.userId);
+      return null;
     }
+  }
+
+
+
+  /// [post->feed: Update: R:  Updateなので返り値なし]
+  Future<void> updatePost(Post updatePost) async {
+    return await dbManager.updatePost(updatePost);
   }
 
 

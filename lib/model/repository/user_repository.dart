@@ -9,10 +9,11 @@ import 'package:min3_minstag_ram/model/database/database_manager.dart';
 
 
 class UserRepository {
-
   /// [V-> VM -> M(R) -> M(DatabaseManager): FireStore(database)アクセス用]
   final DatabaseManager dbManager;
   UserRepository({this.dbManager});
+
+
 
   /// [アプリ全体で取得できるようにstatic: userのデータをとってくる(=Read)method:  用]
   static User currentUser;
@@ -20,6 +21,7 @@ class UserRepository {
   /// [(Firebase毎度のパターン)auth確認用のインスタンス生成]
   final auth.FirebaseAuth _auth = auth.FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
+
 
 
   /// [remoteに取得しにいくmethodゆえRに書く（V->VM->RゆえVMから呼ぶ）]

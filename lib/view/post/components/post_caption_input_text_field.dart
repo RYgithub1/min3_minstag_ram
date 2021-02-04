@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:min3_minstag_ram/generated/l10n.dart';
 import 'package:min3_minstag_ram/util/constants.dart';
 import 'package:min3_minstag_ram/view/common/style.dart';
+import 'package:min3_minstag_ram/viewmodel/feed_view_model.dart';
 import 'package:min3_minstag_ram/viewmodel/post_view_model.dart';
 import 'package:provider/provider.dart';
 
@@ -30,6 +31,11 @@ class _PostCaptionInputTextFieldState extends State<PostCaptionInputTextField> {
     _captionController.addListener(() {   /// [実はChnageNotifier: addListener()]
       _onCaptionUpdated();
     });
+
+    /// [キャプション編集時用]
+    if (widget.from == PostCaptionOpenMode.FROM_FEED) {
+      _captionController.text = widget.captionBeforeUpdated;
+    }
   }
   @override
   void dispose() {
@@ -57,9 +63,16 @@ class _PostCaptionInputTextFieldState extends State<PostCaptionInputTextField> {
 
 
   _onCaptionUpdated() {
-    final viewModel = Provider.of<PostViewModel>(context, listen:false);
-    viewModel.caption = _captionController.text;
-    print("comm100: _onCaptionUpdated: ${viewModel.caption}");
+    if (widget.from == PostCaptionOpenMode.FROM_FEED) {
+      final viewModel = Provider.of<FeedViewModel>(context, listen:false);
+      viewModel.caption = _captionController.text;
+      print("comm100: _onCaptionUpdated: .FROM_FEED: ${viewModel.caption}");
+
+    } else {   /// [if: PostCaptionOpenMode.FROM_POST]
+      final viewModel = Provider.of<PostViewModel>(context, listen:false);
+      viewModel.caption = _captionController.text;
+      print("comm101: _onCaptionUpdated: .FROM_POST: ${viewModel.caption}");
+    }
   }
 
 

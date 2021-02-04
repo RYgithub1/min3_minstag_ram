@@ -4,16 +4,21 @@ import 'package:min3_minstag_ram/data_models/user.dart';
 import 'package:min3_minstag_ram/generated/l10n.dart';
 import 'package:min3_minstag_ram/util/constants.dart';
 import 'package:min3_minstag_ram/view/common/user_card.dart';
+import 'package:min3_minstag_ram/view/feed/screens/feed_post_edit_screen.dart';
+import 'package:share/share.dart';
 
 
 
 
 class FeedPostHeaderPart extends StatelessWidget {
+  /// [ないので追加]
+  final FeedMode feedMode;
+
   final User postUser;
   final Post post;
   final User currentUser;
   /// [投稿ユーザーの情報があればよい...subTitleは投稿時の場所post...本人の投稿かで可能なcrud変わるcurrentUser]
-  FeedPostHeaderPart({@required this.postUser, @required this.post, @required this.currentUser});
+  FeedPostHeaderPart({@required this.postUser, @required this.post, @required this.currentUser, @required this.feedMode});
 
   @override
   Widget build(BuildContext context) {
@@ -44,5 +49,24 @@ class FeedPostHeaderPart extends StatelessWidget {
 
 
 
-  _onPopupMenuSelected(BuildContext context, value) {}
+  _onPopupMenuSelected(BuildContext context, PostMenu selectedMenu) {
+    switch (selectedMenu) {
+      case PostMenu.EDIT:
+        Navigator.push(context, MaterialPageRoute(
+          builder: (_) => FeedPostEditScreen(
+            post: post,
+            postUser: postUser,
+            feedMode: feedMode,
+          ),
+        ));
+        break;
+      case PostMenu.SHARE:   /// [SHAREこれだけ]
+        Share.share(
+          post.imageUrl,
+          subject: post.caption,
+        );
+        break;
+      default:
+    }
+  }
 }

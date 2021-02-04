@@ -31,6 +31,13 @@ class FeedViewModel extends ChangeNotifier {
   }
 
 
+  // FeedViewModel向けcaption
+  /// final String caption;  /// [final: コンストラクタに記入必須でエラー]
+  String caption;   /// [外部から呼ぶのみ]
+
+
+
+
 
   /// [feedを取得してUIへ: 2パターンfeedMode: Notifyゆえ<void>]
   Future<void> getPosts(FeedMode feedMode) async {
@@ -50,6 +57,21 @@ class FeedViewModel extends ChangeNotifier {
   /// [FutureBuilderなので戻り値で返す]
   Future<User> getPostUserInfo(String userId) async {
     return await userRepository.getUserById(userId);
+  }
+
+
+
+  /// [Post->Feed: Update]
+  Future<void> updatePost(Post post, FeedMode feedMode) async {
+    isProcessing = true;
+    await postRepository.updatePost(
+      /// [DartDataClass: copyWith(): 更新したい対象一部、captionのみ可能]
+      post.copyWith(caption: caption),
+    );
+    /// [処理完了後に一覧画面に戻ってくる...post投稿内容を再取得]
+    await getPosts(feedMode);
+    isProcessing = false;
+    notifyListeners();
   }
 
 

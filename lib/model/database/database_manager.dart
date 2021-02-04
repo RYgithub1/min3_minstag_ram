@@ -12,6 +12,8 @@ import 'package:min3_minstag_ram/data_models/user.dart';
 /// [V-> VM -> M(R) -> M(DatabaseManager): FireStore(database)アクセス用]
 class DatabaseManager {
 
+
+
   /// [cloid_firestore取得用インスタンスの作成]
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
@@ -105,7 +107,9 @@ class DatabaseManager {
 
 
   /// [db: プロフィール画面に表示されているユーザーの投稿を取得]
-  Future<List<Post>> getPostsByuser(String userId) {}
+  Future<List<Post>> getPostsByUser(String userId) {
+    return null;
+  }
 
 
 
@@ -118,6 +122,13 @@ class DatabaseManager {
     });
     print("comm605: getFollowingUserIds: userIds: $userIds");
     return userIds;
+  }
+
+
+  /// [post->feed: Update: DB]
+  Future<void> updatePost(Post updatePost) async {
+    final reference = _db.collection("posts").doc(updatePost.postId);
+    await reference.update(updatePost.toMap());
   }
 
 

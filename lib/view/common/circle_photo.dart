@@ -10,7 +10,7 @@ class CirclePhoto extends StatelessWidget {
   final String photoUrl;   /// [ネットワーク画像]
   final double radius;
   /// [欲しいデータをconstructする]
-  CirclePhoto({@required this.photoUrl,  this.radius, this.isImageFromFile});
+  CirclePhoto({@required this.photoUrl,  this.radius, @required this.isImageFromFile});
 
 
   @override
