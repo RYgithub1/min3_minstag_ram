@@ -104,4 +104,19 @@ class PostRepository {
   }
 
 
+
+  /// VM: List<Comment> comments = [];
+  /// [取得データをR->VM: Listに格納 => 戻り値List<Comment>]
+  Future<List<Comment>> getComment(String postId) async {
+    return dbManager.getComment(postId);
+  }
+
+
+
+  Future<void> deleteComment(String deleteCommentId) async {
+    await dbManager.deleteComent(deleteCommentId);
+  }
+
+
+
 }

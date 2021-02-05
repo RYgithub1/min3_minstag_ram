@@ -65,6 +65,8 @@ class _CommentInputPartState extends State<CommentInputPart> {
             border: InputBorder.none,    /// [線消そう]
             hintText: S.of(context).addComment,
           ),
+          /// [入力欄を折り返したい: "maxLines: null,"]
+          maxLines: null,
         ),
 
         trailing: FlatButton(   /// [入力中判定: 入力時のみ、押せる&&色変わる -> 判別にbool]

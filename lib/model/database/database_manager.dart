@@ -89,6 +89,7 @@ class DatabaseManager {
             results.add(Post.fromMap(element.data()));   /// [Map型 -> モデルクラス(Post)へ変換]
           });
         });
+    /// [>> MAKE INDEX]
     print("comm603: getPostsMineAndFollowings: results: $results");
     return results;
     /// [========== データ取得(2): whereInは最大 10 個までの比較値しかサポートしていない件ゆえ書き換え ==========]
@@ -136,6 +137,40 @@ class DatabaseManager {
   /// [postに紐づくコメント投稿]
   Future<void> postComment(Comment comment) async {
     await _db.collection("comments").doc(comment.commentId).set(comment.toMap());   /// [doc(任意16桁一意)]
+  }
+
+
+  /// [db保存データのget]
+  Future<List<Comment>> getComment(String postId) async {
+    /// [データがない場合がある = 有無により判定してから、処理]
+    // final query = _db.collection("comment").get();
+    /// [await必要: ないと取得出来ず、quety.docs使えない]
+    final query = await _db.collection("comments").get();
+    if (query.docs.length == 0) {
+      return List();
+    }
+    /// [返り値用リスト作成]
+    var results = List<Comment>();
+    await _db.collection("comments")
+        .where("postId", isEqualTo: postId)   /// [commentに紐づく投稿のみ特定: where("dbのフィールド名", isEqualTo: 拾ってきたpostId)]
+        .orderBy("commentDateTime")    /// [並び方をVに合わせて揃える]
+        .get()     /// [取得したvalue: List型QuerySnapshot取得]
+        .then((value) {   /// [Futureゆえ,,,F.then().catchError()可能,,,DartDataClass変換して格納]
+          value.docs.forEach((element) {
+            results.add(Comment.fromMap(element.data()));
+          });
+        });
+    /// [>> MAKE INDEX]
+    return results;
+  }
+
+
+
+  Future<void> deleteComent(String deleteCommentId) async {
+    /// [まず対象コメントを取得]
+    final reference = _db.collection("comments").doc(deleteCommentId);
+    /// [削除]
+    await reference.delete();
   }
 
 
