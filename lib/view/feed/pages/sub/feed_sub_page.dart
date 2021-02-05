@@ -24,17 +24,22 @@ class FeedSubPage extends StatelessWidget {
         if (model.isProcessing) {
           return Center(child: CircularProgressIndicator());
         } else {
-          return ListView.builder(
-            itemCount: model.posts.length,
-            itemBuilder: (context, index) {
-              return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                child: FeedPostTile(
-                  feedMode: feedMode,
-                  post: model.posts[index],
-                ),
-              );
-            },
+          return RefreshIndicator(   /// [スクロールリロード]
+            onRefresh: () => feedViewModel.getPosts(feedMode),   /// [VM更新するだけ(notify走る)]
+            child: ListView.builder(
+              physics: AlwaysScrollableScrollPhysics(),   /// [RefreshIndicator()]
+
+              itemCount: model.posts.length,
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  child: FeedPostTile(
+                    feedMode: feedMode,
+                    post: model.posts[index],
+                  ),
+                );
+              },
+            ),
           );
         }
       },

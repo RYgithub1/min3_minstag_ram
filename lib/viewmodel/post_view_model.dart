@@ -41,8 +41,6 @@ class PostViewModel extends ChangeNotifier {
     locationString = _toLocationString(location);
     print("comm303: locationString: $locationString");
 
-
-
     /// [取得できていればtrue]
     if (imageFile != null) isImagePicked = true;
     isProcessing = false;
@@ -50,14 +48,14 @@ class PostViewModel extends ChangeNotifier {
   }
 
 
-
-
+  /// [method(){}]
   String _toLocationString(Location location) {
     return location.country + " " + location.state + " " + location.city;
   }
 
 
 
+  /// [FutureNoReturn(NL), Argu]
   Future<void> updateLocation(double latitude, double longitude) async {
     /// [locationをアップデートする]
     location = await postRepository.updateLocation(latitude, longitude);
@@ -68,6 +66,8 @@ class PostViewModel extends ChangeNotifier {
 
 
 
+
+  /// [FutureNoReturn(NL), Argu]
   Future<void> post() async {
     isProcessing = true;
     notifyListeners();
@@ -86,6 +86,9 @@ class PostViewModel extends ChangeNotifier {
   }
 
 
+
+
+  /// [PresentNoReturn(NL), NoArgu]
   /// [Circularの停止]
   void cancelPost() {
     isProcessing = false;

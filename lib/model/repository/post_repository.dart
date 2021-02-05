@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:min3_minstag_ram/data_models/comment.dart';
+import 'package:min3_minstag_ram/data_models/like.dart';
 import 'package:min3_minstag_ram/data_models/location.dart';
 import 'package:min3_minstag_ram/data_models/post.dart';
 import 'package:min3_minstag_ram/data_models/user.dart';
@@ -19,6 +20,7 @@ class PostRepository {
 
 
 
+  /// [FutureFileReturn, Argu]
   Future<File> pickImage(UploadType uploadType) async {
     final imagePicker = ImagePicker();
     if (uploadType == UploadType.GALLERY) {
@@ -33,16 +35,19 @@ class PostRepository {
   }
 
 
+  /// [FutureLocationReturn, NoArgu]
   Future<Location> getCurrentLocation() async {
     return await locationManager.getCurrentLocation();
   }
 
 
+  /// [FutureLocationReturn, Argu]
   Future<Location> updateLocation(double latitude, double longitude) async {
     return await locationManager.updateLocation(latitude, longitude);
   }
 
 
+  /// [FutureNoReturn, Argu]
   /// [postするだけなので<void>に修正]
   Future<void> post(User currentUser, File imageFile, String caption, Location location, String locationString) async {
     /// Firestore/Storage: 一意のID: UUID
@@ -67,6 +72,7 @@ class PostRepository {
 
 
 
+  /// [FutureList<Post>Return, Argu]
   // Future<Post> getPosts(FeedMode feedMode) async {
   /// [VM: List<Post> posts: Match Type]
   Future<List<Post>> getPosts(FeedMode feedMode, User feedUser) async {
@@ -83,13 +89,22 @@ class PostRepository {
 
 
 
+  /// [FutureNoReturn, Argu]
   /// [post->feed: Update: R:  Updateなので返り値なし]
   Future<void> updatePost(Post updatePost) async {
-    return await dbManager.updatePost(updatePost);
+    /// return await dbManager.updatePost(updatePost);  /// [returnがあっても自動で無視してくれる様子]
+    await dbManager.updatePost(updatePost);
   }
+  // reference: MIN
+  /*
+  Future<void> updatePost(Post updatePost) async {
+    return dbManager.updatePost(updatePost);
+  }
+  */
 
 
 
+  /// [FutureNoReturn, Argu]
   Future<void> postComment(Post post, User commentUser, String commentString) async {
     /// [必要なComment...DartDataClassに代入して丸ごと渡して、Firestore保存]
     final comment = Comment(
@@ -105,6 +120,8 @@ class PostRepository {
 
 
 
+  /// [VM: return XXX: XXXは何かしら返すオブジェクトが必要,,,R:Return必要]
+  /// [FutureList<Comment>Return, Argu]
   /// VM: List<Comment> comments = [];
   /// [取得データをR->VM: Listに格納 => 戻り値List<Comment>]
   Future<List<Comment>> getComment(String postId) async {
@@ -113,9 +130,56 @@ class PostRepository {
 
 
 
+  /// [FutureNoReturn, Argu]
   Future<void> deleteComment(String deleteCommentId) async {
     await dbManager.deleteComent(deleteCommentId);
   }
+
+
+
+
+  /// [FutureNoReturn, Argu]
+  Future<void> likeIt(Post post, User currentUser) async {
+    final like = Like(
+      likeUserId: currentUser.userId,
+      likeId: Uuid().v1(),
+      postId: post.postId,
+      likeDateTime: DateTime.now(),
+    );
+    /// [returnもnotifyListenersもない -> await dbManager.xxx 反映]
+    await dbManager.likeIt(like);
+  }
+  Future<void> unLikeIt(Post post, User currentUser) async {
+    await dbManager.unLikeIt(post, currentUser);
+  }
+
+
+
+
+  /// [FutureLikeResultReturn, Argu]
+  Future<LikeResult> getLikeResult(String postId, User currentUser) async {
+    /// [dbからいいねデータ取得: Likesコレクションを丸ごとListで取得]
+    final likes = await dbManager.getLikes(postId);
+    /// [自分がデータにいるか判定]
+    var isLikedPost = false;
+    for (var like in likes) {
+      if (like.likeUserId == currentUser.userId) {
+        isLikedPost = true;
+        break;
+      }
+    }
+    /// return ;  /// [returnで返さないと繋がらない!]
+    return LikeResult(likes: likes, isLikedToThisPost: isLikedPost);
+  }
+
+
+
+  /// [FutureNoreturn, Argu]
+  Future<void> deletePost(String postId, String imageStoragePath) async {
+    await dbManager.deletePost(postId, imageStoragePath);
+
+  }
+
 
 
 

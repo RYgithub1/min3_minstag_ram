@@ -3,8 +3,11 @@ import 'package:min3_minstag_ram/data_models/post.dart';
 import 'package:min3_minstag_ram/data_models/user.dart';
 import 'package:min3_minstag_ram/generated/l10n.dart';
 import 'package:min3_minstag_ram/util/constants.dart';
+import 'package:min3_minstag_ram/view/common/confirm_dialog.dart';
 import 'package:min3_minstag_ram/view/common/user_card.dart';
 import 'package:min3_minstag_ram/view/feed/screens/feed_post_edit_screen.dart';
+import 'package:min3_minstag_ram/viewmodel/feed_view_model.dart';
+import 'package:provider/provider.dart';
 import 'package:share/share.dart';
 
 
@@ -66,7 +69,29 @@ class FeedPostHeaderPart extends StatelessWidget {
           subject: post.caption,
         );
         break;
-      default:
+      // default:
+      /// [DELETEは最後に実装: post->comment->like->posdDelete: 全部一気に消すから]
+      case PostMenu.DELETE:
+        showConfirmDialog(
+          context: context,
+          title: S.of(context).deletePost,
+          content: S.of(context).deletePostConfirm,
+          onConfirmed: (isConfirmed) {
+            if (isConfirmed) _deletePost(context, post);
+          },
+        );
+        break;
     }
   }
+
+
+
+  /// [PresentNoreturn, Argu]
+  Future<void> _deletePost(BuildContext context, Post post) async {
+    final feedViewModel = Provider.of<FeedViewModel>(context, listen: false);
+    await feedViewModel.deletePost(post, feedMode);   /// [feedModeも渡す必要: Post削除後に開く2パターン]
+  }
+
+
+
 }

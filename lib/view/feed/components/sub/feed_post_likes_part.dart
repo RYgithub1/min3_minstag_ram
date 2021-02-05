@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:min3_minstag_ram/data_models/like.dart';
 import 'package:min3_minstag_ram/data_models/post.dart';
 import 'package:min3_minstag_ram/data_models/user.dart';
 import 'package:min3_minstag_ram/generated/l10n.dart';
 import 'package:min3_minstag_ram/view/comment/screens/comment_screen.dart';
 import 'package:min3_minstag_ram/view/common/style.dart';
+import 'package:min3_minstag_ram/viewmodel/feed_view_model.dart';
+import 'package:provider/provider.dart';
 
 
 
@@ -17,32 +20,56 @@ class FeedPostLikesPart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    final feedViewModel = Provider.of<FeedViewModel>(context, listen: false);   /// [FutureBuilder用に作成]
+
     return Padding(
       padding: const EdgeInsets.only(left: 12.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              IconButton(
-                icon: FaIcon(FontAwesomeIcons.solidHeart),
-                onPressed: null,
-              ),
-              IconButton(   /// [To CommentScreen()]
-                icon: FaIcon(FontAwesomeIcons.comment),
-                /// [Routeでcontext, CommentScreen()にpost,が必要な為追記]
-                onPressed: () => _openCommentScreen(context, post, postUser),
-                ///  onPressed: _openCommentScreen(context, post),   /// [ERROR]
-                /// onPressed: null,   /// [HERE]
-              ),
-            ],
-          ),
-          Text(
-            "0 ${S.of(context).likes}",
-            style: numberOfLikesTextStyle,
-          ),
-        ],
+      /// [（親）Feed_sub_pageでconsumerしている]
+      /// [->（子）再度consumerする必要ないのでFutureBuilder(非同期時間差で自動取得)]
+      child: FutureBuilder(
+        future: feedViewModel.getLikeResult(post.postId),
+        builder: (context, AsyncSnapshot<LikeResult> snapshot) {
+          if (snapshot.hasData && snapshot.data != null) {
+              final likeResult = snapshot.data;
+
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      /// [------- いいね -------]
+                      likeResult.isLikedToThisPost  /// [有無の場合分け]
+                          ? IconButton(   /// [いいね済み]
+                            icon: FaIcon(FontAwesomeIcons.solidHeart),
+                            onPressed: () => _unLikeIt(context),   /// [いいね取り消し処理]
+                          )
+                          : IconButton(   /// [いいね未だ]
+                            icon: FaIcon(FontAwesomeIcons.heart),
+                            onPressed: () => _likeIt(context),
+                          ),
+                      /// [------- コメント -------]
+                      IconButton(   /// [To CommentScreen()]
+                        icon: FaIcon(FontAwesomeIcons.comment),
+                        /// [Routeでcontext, CommentScreen()にpost,が必要な為追記]
+                        onPressed: () => _openCommentScreen(context, post, postUser),
+                        ///  onPressed: _openCommentScreen(context, post),   /// [ERROR]
+                        /// onPressed: null,   /// [HERE]
+                      ),
+                    ],
+                  ),
+                  Text(
+                    likeResult.likes.length.toString() + " " + S.of(context).likes,
+                    style: numberOfLikesTextStyle,
+                  ),
+                ],
+              );
+
+          } else {
+            return Container();
+          }
+        },
       ),
     );
   }
@@ -58,6 +85,21 @@ class FeedPostLikesPart extends StatelessWidget {
       ),
     ));
   }
+
+
+
+
+  /// [いいね済み]
+  _likeIt(BuildContext context) async {
+    final feedViewModel = Provider.of<FeedViewModel>(context, listen: false);
+    await feedViewModel.likeIt(post);
+  }
+  /// [いいね未だ]
+  _unLikeIt(BuildContext context) async {
+    final feedViewModel = Provider.of<FeedViewModel>(context, listen: false);
+    await feedViewModel.unLikeIt(post);
+  }
+
 
 
 }

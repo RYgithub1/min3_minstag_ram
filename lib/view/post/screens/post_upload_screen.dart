@@ -73,7 +73,7 @@ class PostUploadScreen extends StatelessWidget {
 
   _cancelPost(BuildContext context) {
     final postViewModel = Provider.of<PostViewModel>(context, listen: false);
-    postViewModel.cancelPost();
+    postViewModel.cancelPost();   /// [NoReturnNoArgu]
     Navigator.pop(context);
   }
 

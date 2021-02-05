@@ -24,6 +24,7 @@ class UserRepository {
 
 
 
+  /// [FutureBoolReturn, NoArgu]
   /// [remoteに取得しにいくmethodゆえRに書く（V->VM->RゆえVMから呼ぶ）]
   Future<bool> isSignIn() async {
     /// final firebaseUser = await _auth.currentUser();   /// [breaking:]
@@ -42,6 +43,7 @@ class UserRepository {
 
 
 
+  /// [FutureBoolReturn, NoArgu]
   Future<bool> signIn() async{
     try {
       GoogleSignInAccount signInAccount = await _googleSignIn.signIn();
@@ -85,6 +87,7 @@ class UserRepository {
 
 
 
+  /// [method(){}]
   _convertToUser(auth.User firebaseUser) {
     return User(
       userId: firebaseUser.uid,
@@ -98,6 +101,7 @@ class UserRepository {
 
 
 
+  /// [FutureUserReturn, Argu]
   /// [Feed: FutureBuilder]
   Future<User> getUserById(String userId) async {
     return await dbManager.getUserInfoFromDbById(userId);

@@ -75,7 +75,7 @@ class CommentScreen extends StatelessWidget {
                                     if (isConfirmed) {
                                       _deleteComment(context, index);
                                     }
-                                    
+
                                     
                                   },
                               ),
@@ -101,10 +101,10 @@ class CommentScreen extends StatelessWidget {
 
 
 
-  void _deleteComment(BuildContext context, int commentIndex) async {
+  Future<void> _deleteComment(BuildContext context, int commentIndex) async {
     final commentViewModel = Provider.of<CommentViewModel>(context, listen: false);
     await commentViewModel.deleteComment(post, commentIndex);
-
-
   }
+
+
 }

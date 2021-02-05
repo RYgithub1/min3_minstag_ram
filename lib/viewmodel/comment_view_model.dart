@@ -32,7 +32,7 @@ class CommentViewModel extends ChangeNotifier {
 
 
 
-
+  /// [FutureNoReturn(NL), Argu]
   Future<void> postComment(Post post) async {
     await postRepository.postComment(post, currentUser, comment);   /// [Comment()/commentId = currentUserのId]
 
@@ -43,6 +43,7 @@ class CommentViewModel extends ChangeNotifier {
 
 
 
+  /// [FutureNoReturn(NL), Argu]
   Future<void> getComment(String postId) async {
     isLoading = true;
     notifyListeners();
@@ -55,11 +56,13 @@ class CommentViewModel extends ChangeNotifier {
 
 
 
+  /// [FutureUseReturn, Argu]
   Future<User> getCommentUserInfo(String commentUserId) async {
     return await userRepository.getUserById(commentUserId);
   }
 
 
+  /// [FutureNoReturn(NL), Argu]
   /// [VM: Delete,,,戻り値なし]
   Future<void> deleteComment(Post post, int commentIndex) async {
     final deleteCommentId = comments[commentIndex].commentId;   /// [delete対象のid必要]
