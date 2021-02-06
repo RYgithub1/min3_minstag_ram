@@ -32,6 +32,7 @@ dependencies:
   cached_network_image: ^2.4.1
   timeago: ^2.0.29
   share: ^0.6.5+4
+  scrollable_positioned_list: ^0.1.9
 
 
 

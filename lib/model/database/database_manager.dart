@@ -119,10 +119,22 @@ class DatabaseManager {
 
 
 
-  /// []
+  /// [profile]
   /// [db: プロフィール画面に表示されているユーザーの投稿を取得]
-  Future<List<Post>> getPostsByUser(String userId) {
-    return null;
+  Future<List<Post>> getPostsByUser(String userId) async {
+    final query = await _db.collection("posts").get();
+    if (query.docs.length == 0) return List();
+    var results = List<Post>();
+    await _db.collection("posts")
+              .where("userId", isEqualTo: userId)
+              .orderBy("postDateTime", descending: true)
+              .get()
+              .then((value) => {
+                value.docs.forEach((element) {
+                  results.add(Post.fromMap(element.data()));
+                }),
+              });
+    return results;
   }
 
 
@@ -264,10 +276,36 @@ class DatabaseManager {
       final ref = _db.collection("likes").doc(element.id);
       await ref.delete();
     });
-    /// [>> Stodrage画像]
+    /// [>> Storage画像 !!!]
     final storageref = FirebaseStorage.instance.ref().child(imageStoragePath);
     storageref.delete();
   }
+
+
+
+  /// [Firestore格納の型: "idA","idB","idC","idD",,, -> List<String>]
+  /// [FutureList<String>Return, Argu]
+  Future<List<String>> getFollowerUserId(String userId) async {
+    /// [Firestoreから取得したい = 取得結果判定]
+    final query = await _db.collection("users").doc(userId)
+                            .collection("followers").get();   /// [SubCollection]
+    /// [THE Firestore: サブコレクションを設定可能]
+    if (query.docs.length == 0) return List();
+    var userIds = List<String>();
+    query.docs.forEach((id) {
+      /// [ERROR: data["userId"]] 前に()必要
+      userIds.add(id.data()["userId"]);
+    });
+    return userIds;
+  }
+
+
+  /// [FutureNoReturm, Argu]
+  Future<void> updateProfile(User updateUser) async {
+    final reference = _db.collection("users").doc(updateUser.userId);
+    await reference.update(updateUser.toMap());
+  }
+
 
 
 }

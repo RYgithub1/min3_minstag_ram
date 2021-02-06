@@ -63,6 +63,7 @@ class MyApp extends StatelessWidget {
       home: FutureBuilder(
         future: loginViewModel.isSignIn(),
         builder: (context, AsyncSnapshot<bool> snapshot){
+          /// [HINT: snapshot.data（=Firestoreのdata相当）  ||  .docsARRAY.data()（=纏まったデータ）]
           if (snapshot.hasData && snapshot.data){   /// [データあり&&データがtrue->ログイン中へ進む]
             return HomeScreen();
           } else {   /// [そうでなければログイン処理へ進む]

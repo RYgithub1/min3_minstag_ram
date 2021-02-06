@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:min3_minstag_ram/generated/l10n.dart';
+import 'package:min3_minstag_ram/util/constants.dart';
 import 'activity/pages/activity_page.dart';
 import 'feed/pages/feed_page.dart';
 import 'post/pages/post_page.dart';
@@ -32,7 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
       SearchPage(),
       PostPage(),
       ActivityPage(),
-      ProfilePage(),
+      ProfilePage(profileMode: ProfileMode.MYSELF, selectedUser: null,),
     ];
   }
   // final int _currentIndex = 0;

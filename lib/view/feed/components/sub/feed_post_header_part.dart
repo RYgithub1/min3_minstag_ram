@@ -6,6 +6,7 @@ import 'package:min3_minstag_ram/util/constants.dart';
 import 'package:min3_minstag_ram/view/common/confirm_dialog.dart';
 import 'package:min3_minstag_ram/view/common/user_card.dart';
 import 'package:min3_minstag_ram/view/feed/screens/feed_post_edit_screen.dart';
+import 'package:min3_minstag_ram/view/profile/screens/profile_screen.dart';
 import 'package:min3_minstag_ram/viewmodel/feed_view_model.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
@@ -26,7 +27,9 @@ class FeedPostHeaderPart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return UserCard(
-      onTap: null,
+      /// onTap: null,  [PROFILE読み込みへ]
+      /// onTap: _openProfile(context, postUser), [ERROR]
+      onTap: () => _openProfile(context, postUser),
       photoUrl: postUser.photoUrl,
       title: postUser.inAppUserName,
       subTitle: post.locationString,
@@ -90,6 +93,20 @@ class FeedPostHeaderPart extends StatelessWidget {
   Future<void> _deletePost(BuildContext context, Post post) async {
     final feedViewModel = Provider.of<FeedViewModel>(context, listen: false);
     await feedViewModel.deletePost(post, feedMode);   /// [feedModeも渡す必要: Post削除後に開く2パターン]
+  }
+
+
+
+  _openProfile(BuildContext context, User postUser) {
+    final feedViewModel = Provider.of<FeedViewModel>(context, listen: false);
+    Navigator.push(context, MaterialPageRoute(
+      builder: (context) => ProfileScreen(
+        profileMode: postUser.userId == feedViewModel.currentUser.userId
+            ? ProfileMode.MYSELF
+            : ProfileMode.OTHER,
+        selectedUser: postUser,
+      ),
+    ));
   }
 
 

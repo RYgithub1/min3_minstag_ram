@@ -11,8 +11,6 @@ import 'sub/feed_sub_page.dart';
 
 
 class FeedPage extends StatelessWidget {
-  const FeedPage({Key key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,6 +26,7 @@ class FeedPage extends StatelessWidget {
       ),
       body: FeedSubPage(
         feedMode: FeedMode.FROM_FEED,
+        index: 0,
       ),
     );
   }

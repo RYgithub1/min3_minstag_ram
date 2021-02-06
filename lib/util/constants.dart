@@ -25,3 +25,18 @@ enum PostMenu {
   DELETE,
   SHARE,
 }
+
+
+/// [profile: (1)currentUser本人なら編集、(2)異なるならfollowへ]
+/// [アクセス3パターン: BNBfeed(1)(2),,,BNBprofile,,,BNBsearch]
+enum ProfileMode {
+  MYSELF,
+  OTHER,
+}
+
+
+/// [profile: PopupMenu: 自分か他人か->編集権限]
+enum ProfileSettingMenu {
+  THEME_CHANGE,
+  SIGN_OUT,
+}
