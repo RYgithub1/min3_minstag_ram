@@ -7,6 +7,7 @@ import 'package:min3_minstag_ram/data_models/comment.dart';
 import 'package:min3_minstag_ram/data_models/like.dart';
 import 'package:min3_minstag_ram/data_models/post.dart';
 import 'package:min3_minstag_ram/data_models/user.dart';
+import 'package:min3_minstag_ram/model/repository/user_repository.dart';
 
 
 
@@ -304,6 +305,36 @@ class DatabaseManager {
   Future<void> updateProfile(User updateUser) async {
     final reference = _db.collection("users").doc(updateUser.userId);
     await reference.update(updateUser.toMap());
+  }
+
+
+
+
+  Future<List<User>> searchUsers(String queryString) async {
+    /// [検索: まずcollectionにデータあるか判定 -> 一致確認]
+    final query = await _db.collection("users")
+                            .orderBy("inAppUserName")   /// [あいうえお順で並べる]
+                            .startAt([queryString])   /// ["あいうえお順"の始点設定: List型,検索欄の入力文字(queryString)がquery]
+                            .endAt([queryString + "\uf8ff"])   /// [["あいうえお順"の終点設定: 挟むことで対象を抽出] && ["\uf8ff"]
+                            .get();
+    if (query.docs.length == 0) return List();
+
+    var soughtUsers = List<User>();
+
+    query.docs.forEach((element) {
+      final selectedUser = User.fromMap(element.data());
+      /// [検索結果欄への表示は、自分以外]
+      if (selectedUser.userId != UserRepository.currentUser.userId) {
+        soughtUsers.add(selectedUser);
+      }
+      /// return soughtUsers;   [こっちじゃない]
+    });
+    /*
+    This function has a return type of 'FutureOr<List<User>>',
+    but doesn't end with a return statement.
+    Try adding a return statement, or changing the return type to 'void'.
+    */
+    return soughtUsers;   /// [こっち]
   }
 
 

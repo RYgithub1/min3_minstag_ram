@@ -7,6 +7,7 @@ import 'package:min3_minstag_ram/viewmodel/feed_view_model.dart';
 import 'package:min3_minstag_ram/viewmodel/login_view_model.dart';
 import 'package:min3_minstag_ram/viewmodel/post_view_model.dart';
 import 'package:min3_minstag_ram/viewmodel/profile_view_model.dart';
+import 'package:min3_minstag_ram/viewmodel/search_view_model.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
@@ -91,6 +92,11 @@ List<SingleChildWidget> viewModels = [
     create: (context) => ProfileViewModel(
       userRepository: Provider.of<UserRepository>(context, listen: false),
       postRepository: Provider.of<PostRepository>(context, listen: false),
+    ),
+  ),
+  ChangeNotifierProvider<SearchViewModel>(
+    create: (context) => SearchViewModel(
+      userRepository: Provider.of<UserRepository>(context, listen: false),
     ),
   ),
 

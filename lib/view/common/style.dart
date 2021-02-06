@@ -40,4 +40,8 @@ const editProfileTitleTextStyle = TextStyle(fontFamily: RegularFont, fontSize: 1
 const profileBioTextStyle = TextStyle(fontFamily: RegularFont, fontSize: 12.0);
 
 
+/// [Search]
+const searchPageAppBarTitleTextStyle = TextStyle(fontFamily: RegularFont, color: Colors.grey);
+
+
 

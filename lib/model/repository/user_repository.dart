@@ -167,5 +167,14 @@ class UserRepository {
   }
 
 
+  /// [FutureList<User>Return, Argu]
+  Future<List<User>> searchUsers(String query) async {
+    return dbManager.searchUsers(query);
+  }
+
+
+
+
+
 
 }

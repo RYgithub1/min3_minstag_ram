@@ -52,7 +52,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.done),
-            onPressed: showConfirmDialog(
+            /// onPressed: showConfirmDialog(   [()=>ERROR]
+            onPressed: () => showConfirmDialog(
               context: context,
               title: S.of(context).editProfile,
               content: S.of(context).editProfileConfirm,
@@ -138,6 +139,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   /// []
   void _updateProfile(BuildContext context) async {
     final profileViewModel = Provider.of<ProfileViewModel>(context, listen: false);
+
     await profileViewModel.updateProfile(   /// [profile更新の対象を引数に]
       _photoUrl,
       _isImageFromFile,
