@@ -33,8 +33,7 @@ class PostUploadScreen extends StatelessWidget {
                 ? Container()
                 : IconButton(icon: Icon(Icons.arrow_back), onPressed: () => _cancelPost(context)),   /// [VoidCallBack: () =>, 必要]
             title: model.isProcessing
-                // ? Text(S.of(context).underProcessing)
-                ? Text("dddddddddddddddd")
+                ? Text(S.of(context).underProcessing)
                 : Text(S.of(context).post),
             actions: <Widget>[
               (model.isProcessing || !model.isImagePicked)  /// [処理中||画像取得できず]

@@ -4,8 +4,10 @@ import 'package:min3_minstag_ram/data_models/like.dart';
 import 'package:min3_minstag_ram/data_models/post.dart';
 import 'package:min3_minstag_ram/data_models/user.dart';
 import 'package:min3_minstag_ram/generated/l10n.dart';
+import 'package:min3_minstag_ram/util/constants.dart';
 import 'package:min3_minstag_ram/view/comment/screens/comment_screen.dart';
 import 'package:min3_minstag_ram/view/common/style.dart';
+import 'package:min3_minstag_ram/view/who_cares_me/who_cares_me_screen.dart';
 import 'package:min3_minstag_ram/viewmodel/feed_view_model.dart';
 import 'package:provider/provider.dart';
 
@@ -59,9 +61,12 @@ class FeedPostLikesPart extends StatelessWidget {
                       ),
                     ],
                   ),
-                  Text(
-                    likeResult.likes.length.toString() + " " + S.of(context).likes,
-                    style: numberOfLikesTextStyle,
+                  GestureDetector(   /// [whoCaresMe]
+                    onTap: () => _checkLikesUsers(context),
+                    child: Text(
+                      likeResult.likes.length.toString() + " " + S.of(context).likes,
+                      style: numberOfLikesTextStyle,
+                    ),
                   ),
                 ],
               );
@@ -98,6 +103,19 @@ class FeedPostLikesPart extends StatelessWidget {
   _unLikeIt(BuildContext context) async {
     final feedViewModel = Provider.of<FeedViewModel>(context, listen: false);
     await feedViewModel.unLikeIt(post);
+  }
+
+
+
+  /// [whoCaresMe]
+  /// [PresentNoReturn, Argu]
+  _checkLikesUsers(BuildContext context) {
+    Navigator.push(context, MaterialPageRoute(
+      builder: (_) => WhoCaresMeScreen(
+        mode: WhoCaresMeMode.LIKE,
+        id: post.postId,   /// [final Post post;]
+      ),
+    ));
   }
 
 

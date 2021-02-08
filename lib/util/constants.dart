@@ -40,3 +40,14 @@ enum ProfileSettingMenu {
   THEME_CHANGE,
   SIGN_OUT,
 }
+
+
+/// [whoCaresMe: 気にする3パターン]
+/// [(1)feedScreen/自分の投稿へのいいね]
+/// [(2)profileScreen/フォロワー=自分が誰にフォロー]
+/// [(3)profileScreen/フォロー中=自分が誰をフォロー]
+enum WhoCaresMeMode {
+  LIKE,
+  FOLLOWED,
+  FOLLOWING,
+}

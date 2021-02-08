@@ -59,7 +59,7 @@ class FeedPostEditScreen extends StatelessWidget {
                 child: Column(
                   children: <Widget>[
                     UserCard(
-                      onTap: null,
+                      onTap: null,      
                       photoUrl: postUser.photoUrl,
                       title: postUser.inAppUserName,
                       subTitle: post.locationString,

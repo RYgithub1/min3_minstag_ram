@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart' as auth;   /// [FirebaseAuth�
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:min3_minstag_ram/data_models/user.dart';
 import 'package:min3_minstag_ram/model/database/database_manager.dart';
+import 'package:min3_minstag_ram/util/constants.dart';
 import 'package:uuid/uuid.dart';
 
 
@@ -191,6 +192,34 @@ class UserRepository {
   /// [FutureBoolReturn, Argu]
   Future<bool> checkIsFollowing(User profileUser) async {
     return await dbManager.checkIsFollowing(profileUser, currentUser);
+  }
+
+
+
+
+  /// [WhoCaresMe]
+  /// [FutureList<User>Return, Argu]
+  Future<List<User>> getCaresMeUsers(String id, WhoCaresMeMode mode) async {
+    var results = List<User>();
+    /// [dbアクセス: care3パターン]
+    switch(mode){
+      case WhoCaresMeMode.LIKE:
+        final postId = id;
+        results = await dbManager.getLikesUsers(postId);
+        break;
+      case WhoCaresMeMode.FOLLOWED:
+        final profileUserId = id;
+        results = await dbManager.getFollowerUsers(profileUserId);
+        break;
+      case WhoCaresMeMode.FOLLOWING:
+        final profileUserId = id;
+        results = await dbManager.getFollowingUsers(profileUserId);
+        break;
+      default:
+        print("no case");
+        break;
+    }
+    return results;
   }
 
 

@@ -155,7 +155,12 @@ class DatabaseManager {
     if (query.docs.length == 0) return List();
     var userIds = List<String>();
     query.docs.forEach((id) {
-      /// userIds.add(id.data()[userId]);   /// [ERROR: FeedScreen/投稿が表示されない(自分か相手)/db取得/""必要]
+      // userIds.add(id.data()[userId]);
+      /// [ERROR: (value as List).where((value) => value == null).isEmpty]
+      // 上記[userID]なので対象をadd出来ず、ListがisEmpty
+      /// [flutter 'in' filters cannot contain 'null' in the "List"]
+      // Listの中身がnullなのでfilterにかけられない状況,,,whereIn
+      /// [FeedScreen/投稿が表示されない(自分か相手)/db取得/""必要]
       userIds.add(id.data()["userId"]);
     });
     print("comm605: getFollowingUserIds: userIds: $userIds");
@@ -412,6 +417,61 @@ class DatabaseManager {
     }
   }
 
+
+
+
+  /// [WhoCaresMe]
+  /// [FutureList<User>Return, Argu]
+  Future<List<User>> getLikesUsers(String postId) async {
+    final query = await _db.collection("likes")    /// [いいねしているものベースにdb検索]
+                      .where("postId", isEqualTo: postId)
+                      .get();
+    /// [queryは、awaitしてないと呼び込まない]
+    if (query.docs.length == 0) return List();
+
+    var userIds = List<String>();
+    query.docs.forEach((id) {
+      userIds.add(id.data()["likeUserId"]);   /// [いいね押してくれたuserIDを取得]
+    });
+
+    /// [likeUserIdを頼りに、userIDを持ってくる]
+    var likesUsers = List<User>();
+    // userIds.forEach((userId) async {
+    //   final user = await getUserInfoFromDbById(userId);
+    //   likeUsers.add(user);
+    // });
+    /// [awaitがuserIds全体に効いていない: await Future]
+    /// [Loop全体をawaitしたい=="await Future.forEach"]
+    await Future.forEach(userIds, (userId) async {
+      final user = await getUserInfoFromDbById(userId);
+      likesUsers.add(user);
+    });
+    print("comm970: 誰がいいねしましたか？: $likesUsers");
+    return likesUsers;
+  }
+
+
+  Future<List<User>> getFollowerUsers(String profileUserId) async {
+    final followerUserIds = await getFollowerUserIds(profileUserId);
+    var followerUsers = List<User>();
+    /// [Loop全体をawaitしたい: await Future.forEach]
+    await Future.forEach(followerUserIds, (followerUserId) async {
+      final user = await getUserInfoFromDbById(followerUserId);
+      followerUsers.add(user);
+    });
+    return followerUsers;
+  }
+
+  Future<List<User>> getFollowingUsers(String profileUserId) async {
+    final followingUserIds = await getFollowingUserIds(profileUserId);
+    var followingUsers = List<User>();
+    /// [Loop全体をawaitしたい: await Future.forEach]
+    await Future.forEach(followingUserIds, (followingUserId) async {
+      final user = await getUserInfoFromDbById(followingUserId);
+      followingUsers.add(user);
+    });
+    return followingUsers;
+  }
 
 
 

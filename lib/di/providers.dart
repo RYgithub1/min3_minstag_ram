@@ -8,6 +8,7 @@ import 'package:min3_minstag_ram/viewmodel/login_view_model.dart';
 import 'package:min3_minstag_ram/viewmodel/post_view_model.dart';
 import 'package:min3_minstag_ram/viewmodel/profile_view_model.dart';
 import 'package:min3_minstag_ram/viewmodel/search_view_model.dart';
+import 'package:min3_minstag_ram/viewmodel/who_cares_me_view_model.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
@@ -99,6 +100,13 @@ List<SingleChildWidget> viewModels = [
       userRepository: Provider.of<UserRepository>(context, listen: false),
     ),
   ),
+  ChangeNotifierProvider<WhoCaresMeViewModel>(
+    create: (context) => WhoCaresMeViewModel(
+      userRepository: Provider.of<UserRepository>(context, listen: false),
+    ),
+  ),
 
 
 ];
+
+

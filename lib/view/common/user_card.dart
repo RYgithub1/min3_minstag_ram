@@ -25,6 +25,8 @@ class UserCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       splashColor: Colors.blueGrey,
+      /// onTap: () => onTap,
+      /// [passしたmethod関数そのまま使うので、()=>あると挙動エラー（onTap発動しない: tap後に遷移しない）]
       onTap: onTap,
       child: ListTile(
         // leading: CirclePhoto(photoUrl: photoUrl),
