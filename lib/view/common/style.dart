@@ -3,10 +3,36 @@ import 'package:flutter/material.dart';
 
 
 
+
 /// [Font]
 const TitleFont = "Billabong";
 const RegularFont = "NotoSansJP-Medium";
 const BoldFont = "NotoSansJP-Bold";
+
+
+
+
+/// [Theme]
+final darkTheme = ThemeData(
+  brightness: Brightness.dark,
+  buttonColor: Colors.white24,
+  primaryIconTheme: IconThemeData(color: Colors.white38),
+  iconTheme: IconThemeData(color: Colors.white60),
+  fontFamily: RegularFont,
+  // ----------------------
+);
+
+final lightTheme = ThemeData(
+  brightness: Brightness.light,
+  buttonColor: Colors.white,
+  primaryIconTheme: IconThemeData(color: Colors.black26),
+  iconTheme: IconThemeData(color: Colors.black87),
+  fontFamily: RegularFont,
+  // ----------------------
+  primaryColor: Colors.grey[200],
+);
+
+
 
 
 /// [Login]

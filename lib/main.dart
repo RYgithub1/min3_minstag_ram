@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:min3_minstag_ram/di/providers.dart';
 import 'package:min3_minstag_ram/generated/l10n.dart';
-
-import 'package:min3_minstag_ram/view/common/style.dart';
+import 'package:min3_minstag_ram/model/repository/theme_change_repository.dart';
 import 'package:min3_minstag_ram/view/home_screen.dart';
 import 'package:min3_minstag_ram/view/login/screens/login_screen.dart';
 import 'package:min3_minstag_ram/viewmodel/login_view_model.dart';
+import 'package:min3_minstag_ram/viewmodel/theme_change_view_model.dart';
 import 'package:provider/provider.dart';
 
 import 'package:timeago/timeago.dart' as timeAgo;   // TopLevelFunctionで出てきてしまう -> as xxx
@@ -15,6 +15,12 @@ import 'package:timeago/timeago.dart' as timeAgo;   // TopLevelFunctionで出て
 
 
 void main() async {
+  /// [Themeh変更: VM呼びたい: BuildContext配下,,ない: 直接Rを呼ぶ]
+  WidgetsFlutterBinding.ensureInitialized();
+  final themeChangeRepository = ThemeChangeRepository();
+  await themeChangeRepository.getIsDarkOn();
+
+
   timeAgo.setLocaleMessages("ja", timeAgo.JaMessages());    /// [TimeStamp: timeAgo]
 
 
@@ -38,6 +44,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
 
     final loginViewModel = Provider.of<LoginViewModel>(context, listen: false);
+    /// [theme変更: WidgetでないのでConsumer不可ゆえ定義: 変更する,,,listen: true]
+    final themeChangeViewModel = Provider.of<ThemeChangeViewModel>(context);
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -50,13 +58,7 @@ class MyApp extends StatelessWidget {
       supportedLocales: S.delegate.supportedLocales,
 
       title: 'MINSTAGRAM',
-      theme: ThemeData(
-        brightness: Brightness.dark,
-        buttonColor: Colors.white24,
-        primaryIconTheme: IconThemeData(color: Colors.white38),
-        iconTheme: IconThemeData(color: Colors.white60),
-        fontFamily: RegularFont,
-      ),
+      theme: themeChangeViewModel.selectedTheme,
 
       // home: HomeScreen(),
       /// home: Consumer<>TA(   [Consumer vs FutureBuilder]

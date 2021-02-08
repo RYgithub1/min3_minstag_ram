@@ -1,6 +1,7 @@
 import 'package:min3_minstag_ram/model/database/database_manager.dart';
 import 'package:min3_minstag_ram/model/location/location_manager.dart';
 import 'package:min3_minstag_ram/model/repository/post_repository.dart';
+import 'package:min3_minstag_ram/model/repository/theme_change_repository.dart';
 import 'package:min3_minstag_ram/model/repository/user_repository.dart';
 import 'package:min3_minstag_ram/viewmodel/comment_view_model.dart';
 import 'package:min3_minstag_ram/viewmodel/feed_view_model.dart';
@@ -8,6 +9,7 @@ import 'package:min3_minstag_ram/viewmodel/login_view_model.dart';
 import 'package:min3_minstag_ram/viewmodel/post_view_model.dart';
 import 'package:min3_minstag_ram/viewmodel/profile_view_model.dart';
 import 'package:min3_minstag_ram/viewmodel/search_view_model.dart';
+import 'package:min3_minstag_ram/viewmodel/theme_change_view_model.dart';
 import 'package:min3_minstag_ram/viewmodel/who_cares_me_view_model.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
@@ -35,6 +37,9 @@ List<SingleChildWidget> independentModels = [
   /// [LocationManager独立しているゆえ -> PostRepositoryが使用]
   Provider<LocationManager>(
     create: (_) => LocationManager(),
+  ),
+  Provider<ThemeChangeRepository>(
+    create: (_) => ThemeChangeRepository(),
   ),
 
 ];
@@ -105,8 +110,14 @@ List<SingleChildWidget> viewModels = [
       userRepository: Provider.of<UserRepository>(context, listen: false),
     ),
   ),
+  ChangeNotifierProvider<ThemeChangeViewModel>(
+    create: (context) => ThemeChangeViewModel(
+      themeRepository: Provider.of<ThemeChangeRepository>(context, listen: false),
+    ),
+  ),
 
 
 ];
+
 
 
