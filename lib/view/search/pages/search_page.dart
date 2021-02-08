@@ -32,7 +32,7 @@ class SearchPage extends StatelessWidget {
 
 
 
-  /// [PresentNoreturn, NoArgu]
+  /// [PresentNoreturn, NoArgu, getFuture]
   _searchuser(BuildContext context) async{
     final selectedUser = await showSearch(
       context: context,

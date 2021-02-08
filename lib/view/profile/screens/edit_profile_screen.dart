@@ -124,7 +124,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
 
 
-  /// [PresentNoReturn, NoArgu, butDBF]
+  /// [PresentNoReturn, NoArgu, getFuture]
   /// [photo: ネットワークからorデバイスから]
   Future<void> _pickNewFileImage() async {
     _isImageFromFile = false;
@@ -136,7 +136,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   }
 
 
-  /// []
+
+  /// [PresentNoReturn, NoArgu, getFuture]
   void _updateProfile(BuildContext context) async {
     final profileViewModel = Provider.of<ProfileViewModel>(context, listen: false);
 

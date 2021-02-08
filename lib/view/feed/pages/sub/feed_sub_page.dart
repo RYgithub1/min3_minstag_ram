@@ -23,7 +23,7 @@ class FeedSubPage extends StatelessWidget {
     final feedViewModel = Provider.of<FeedViewModel>(context, listen: false);
     /// feedViewModel.setFeedUser(feedMode, null);   [profile画面からの遷移は、feedUser]
     feedViewModel.setFeedUser(feedMode, feedUser);
-    Future(  () => feedViewModel.getPosts(feedMode)  );   /// [feedMode: 2パターンのため]
+    Future(  () => feedViewModel.getPosts(feedMode)  );   /// [method(feedMode): 2パターンのため]
 
     return Consumer<FeedViewModel>(
       builder: (context, model, child) {

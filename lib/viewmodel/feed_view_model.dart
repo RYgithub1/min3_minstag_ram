@@ -19,13 +19,14 @@ class FeedViewModel extends ChangeNotifier {
 
 
   bool isProcessing = false;
-  List<Post> posts =[];
+  // List<Post> posts = [];
+  List<Post> posts = List();
 
   /// [FROM_PROFILEの場合、自分とは限らず、特定のUserの情報を表示するため]
   User feedUser;
   User get currentUser => UserRepository.currentUser;
   void setFeedUser(FeedMode feedMode, User user) {
-    if (feedMode == FeedMode.FROM_FEED) {
+    if (feedMode == FeedMode.FROM_FEED){
       feedUser = currentUser;
     } else {
       feedUser = user;   /// [渡された方のuser]
@@ -35,7 +36,7 @@ class FeedViewModel extends ChangeNotifier {
 
   // FeedViewModel向けcaption
   /// final String caption;  /// [final: コンストラクタに記入必須でエラー]
-  String caption;   /// [外部から呼ぶのみ]
+  String caption = "";   /// [外部から呼ぶのみ]
 
 
 

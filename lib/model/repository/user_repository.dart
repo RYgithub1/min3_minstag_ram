@@ -124,7 +124,7 @@ class UserRepository {
   /// [profile: follower number]
   /// [FutureIntReturn, Argu]
   Future<int> getNumberOfFollowers(User profileUser) async {
-    final getFollowerUserIdList =  await dbManager.getFollowerUserId(profileUser.userId);
+    final getFollowerUserIdList =  await dbManager.getFollowerUserIds(profileUser.userId);
     return getFollowerUserIdList.length;
   }
   /// [profile: follower number]
@@ -136,10 +136,10 @@ class UserRepository {
 
 
   /// [FutureNoReturn, Argu]
-  Future<void> updateProfile(User profileUser, String photoUrlUpdated, bool isImageFromFileUpdated, String textNameUpdated, String textBioUpdated) async {
+  Future<void> updateProfile(User profileUser, String photoUrlUpdated, bool isImageFromFile, String nameUpdated, String bioUpdated) async {
     /// [写真の更新: 一度Firestoreに登録して、から取得]
     var updatePhotoUrl;
-    if (isImageFromFileUpdated) {
+    if (isImageFromFile) {
       final updatePhotoFile = File(photoUrlUpdated);
       final storagePath = Uuid().v1();
       updatePhotoUrl = await dbManager.uploadImageToStorage(updatePhotoFile, storagePath);
@@ -148,11 +148,11 @@ class UserRepository {
     final userBeforeUpdate = await dbManager.getUserInfoFromDbById(profileUser.userId);
     /// [一部編集copyWith()]
     final updateUser = userBeforeUpdate.copyWith(
-      inAppUserName: textNameUpdated,
-      photoUrl: isImageFromFileUpdated
+      inAppUserName: nameUpdated,
+      photoUrl: isImageFromFile
           ? updatePhotoUrl
           : userBeforeUpdate.photoUrl,
-      bio: textBioUpdated,
+      bio: bioUpdated,
     );
     await dbManager.updateProfile(updateUser);
   }
@@ -174,6 +174,24 @@ class UserRepository {
 
 
 
+  /// [FOLLOW]
+  /// [FutureNoReturn, Argu]
+  Future<void> follow(User profileUser) async {
+    /// [collection("users")の中に、両側subCollection(followers/followings)作成]
+    await dbManager.follow(profileUser, currentUser);
+  }
+
+  /// [UNFOLLOW]
+  /// [FutureNoReturn, Argu]
+  Future<void> unFollow(User profileUser) async {
+    await dbManager.unFollow(profileUser, currentUser);
+  }
+
+  /// [フォロー後に、ボタンが切り替わらない対応]
+  /// [FutureBoolReturn, Argu]
+  Future<bool> checkIsFollowing(User profileUser) async {
+    return await dbManager.checkIsFollowing(profileUser, currentUser);
+  }
 
 
 

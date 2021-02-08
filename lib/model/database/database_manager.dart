@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:firebase_storage/firebase_storage.dart';
@@ -26,8 +25,8 @@ class DatabaseManager {
   /// [crud: Read: FireStoreから、検索条件を指定して、documentを取得する]
   Future<bool> searchUserInDb(auth.User firebaseUser) async {
     final query = await _db.collection("users")
-        .where("userId", isEqualTo: firebaseUser.uid)   /// [DartDataClass->user.dart/property]
-        .get();
+                            .where("userId", isEqualTo: firebaseUser.uid)   /// [DartDataClass->user.dart/property]
+                            .get();
     /// [取得結果documentにデータがある＝長さがある]
     /// [データ存在するか否かチェックして,repositoryにreturn]
     if (query.docs.length > 0) {
@@ -41,7 +40,8 @@ class DatabaseManager {
   /// [FutureNoReturn, Argu]
   /// [crud: Create: firestore登録用]
   Future<void> insertUser(User user) async {
-    await _db.collection("users").doc(user.userId).set(user.toMap());
+    await _db.collection("users").doc(user.userId)
+              .set(user.toMap());
   }
 
 
@@ -50,8 +50,8 @@ class DatabaseManager {
   /// [crud: Read: ]
   Future<User> getUserInfoFromDbById(String userId) async {
     final query = await _db.collection("users")
-        .where("userId", isEqualTo: userId)
-        .get();
+                            .where("userId", isEqualTo: userId)
+                            .get();
     return User.fromMap(query.docs[0].data());
     // return User.fromMap(query.docs[0].data);
   }
@@ -64,6 +64,7 @@ class DatabaseManager {
     final storageRef = FirebaseStorage.instance.ref().child(storageId);
     final uploadTask = storageRef.putFile(imageFile);
     return uploadTask.then( (TaskSnapshot snapshot) => snapshot.ref.getDownloadURL() );   /// [Future.then().catchError()]
+    // return await (await uploadTask.onComplete).ref.getDownloadURL();   /// FIXME:
   }
 
 
@@ -71,7 +72,8 @@ class DatabaseManager {
   /// [FutureNoreturn, Argu]
   /// [post -> Firestore保存]
   Future<void> insertPost(Post post) async {
-    await _db.collection("posts").doc(post.postId).set(post.toMap());
+    await _db.collection("posts").doc(post.postId)
+              .set(post.toMap());
     print("comm600: DatabaseManager: insertPost: xxx");
   }
 
@@ -93,26 +95,29 @@ class DatabaseManager {
     var results = List<Post>();
     print("comm602: getPostsMineAndFollowings: results: $results");
     await _db.collection("posts")
-        .where("userId", whereIn: userIds)   /// [キーが複数: post取得、但しuserIdsリストに入っているuserIdのみ]
-        .orderBy("postDateTime", descending: true)   /// [降順]
-        .get()   /// [取得]
-        .then((value) {   /// [get(): Futureゆえthen]
-          value.docs.forEach((element) {   /// [docs << QueryDocumentSnapshot]
-            results.add(Post.fromMap(element.data()));   /// [Map型 -> モデルクラス(Post)へ変換]
-          });
-        });
+              .where("userId", whereIn: userIds)   /// [キーが複数: post取得、但しuserIdsリストに入っているuserIdのみ]
+              .orderBy("postDateTime", descending: true)   /// [降順]
+              .get()   /// [取得]
+              .then((value) {   /// [get(): Futureゆえthen]
+                value.docs.forEach((element) {   /// [docs << QueryDocumentSnapshot]
+                  results.add(Post.fromMap(element.data()));   /// [Map型 -> モデルクラス(Post)へ変換]
+                });
+              });
     /// [>> MAKE INDEX]
-    print("comm603: getPostsMineAndFollowings: results: $results");
+    // print("comm603: getPostsMineAndFollowings: results: $results");
     return results;
     /// [========== データ取得(2): whereInは最大 10 個までの比較値しかサポートしていない件ゆえ書き換え ==========]
     /*
     var results = List<Post>();
     await Future.forEach(_, (id) async {
-      await _db.collection("post").where("userId", isEqualTo: id).get().then((value) {
-        value.docs.forEach((element) {
-          results.add(Post.fromMap(element.data()));
-        });
-      });
+      await _db.collection("post")
+                .where("userId", isEqualTo: id)
+                .get()
+                .then((value) {
+                  value.docs.forEach((element) {
+                    results.add(Post.fromMap(element.data()));
+                  });
+                });
     });
     return results;
     */
@@ -123,17 +128,19 @@ class DatabaseManager {
   /// [profile]
   /// [db: プロフィール画面に表示されているユーザーの投稿を取得]
   Future<List<Post>> getPostsByUser(String userId) async {
-    final query = await _db.collection("posts").get();
+    final query = await _db.collection("posts")
+                            .get();
     if (query.docs.length == 0) return List();
     var results = List<Post>();
     await _db.collection("posts")
               .where("userId", isEqualTo: userId)
               .orderBy("postDateTime", descending: true)
               .get()
-              .then((value) => {
+              /// .then((value) => {   /// [どっちかのみ: (){}  or  ()=>method()]
+              .then((value) {
                 value.docs.forEach((element) {
                   results.add(Post.fromMap(element.data()));
-                }),
+                });
               });
     return results;
   }
@@ -142,13 +149,33 @@ class DatabaseManager {
 
   /// [FutureList<String>Return, Argu]
   Future<List<String>> getFollowingUserIds(String userId) async {
-    final query = await _db.collection("users").doc(userId).collection("followings").get();   /// [followingsをここで作成]
+    final query = await _db.collection("users").doc(userId)
+                            .collection("followings")
+                            .get();   /// [followingsをここで作成]
     if (query.docs.length == 0) return List();
     var userIds = List<String>();
     query.docs.forEach((id) {
-      userIds.add(id.data()[userId]);
+      /// userIds.add(id.data()[userId]);   /// [ERROR: FeedScreen/投稿が表示されない(自分か相手)/db取得/""必要]
+      userIds.add(id.data()["userId"]);
     });
     print("comm605: getFollowingUserIds: userIds: $userIds");
+    return userIds;
+  }
+
+  /// [Firestore格納の型: "idA","idB","idC","idD",,, -> List<String>]
+  /// [FutureList<String>Return, Argu]
+  Future<List<String>> getFollowerUserIds(String userId) async {
+    /// [Firestoreから取得したい = 取得結果判定]
+    final query = await _db.collection("users").doc(userId)
+                            .collection("followers")
+                            .get();   /// [SubCollection]
+    /// [THE Firestore: サブコレクションを設定可能]
+    if (query.docs.length == 0) return List();
+    var userIds = List<String>();
+    query.docs.forEach((id) {
+      /// [ERROR: data["userId"]] 前に()必要
+      userIds.add(id.data()["userId"]);
+    });
     return userIds;
   }
 
@@ -166,7 +193,8 @@ class DatabaseManager {
   /// [FutureNoReturn, Argu]
   /// [postに紐づくコメント投稿]
   Future<void> postComment(Comment comment) async {
-    await _db.collection("comments").doc(comment.commentId).set(comment.toMap());   /// [doc(任意16桁一意)]
+    await _db.collection("comments").doc(comment.commentId)
+              .set(comment.toMap());   /// [doc(任意16桁一意)]
   }
 
 
@@ -177,7 +205,8 @@ class DatabaseManager {
     /// [データがない場合がある = 有無により判定してから、処理]
     // final query = _db.collection("comment").get();
     /// [await必要: ないと取得出来ず、quety.docs使えない]
-    final query = await _db.collection("comments").get();
+    final query = await _db.collection("comments")
+                            .get();
     if (query.docs.length == 0) {
       return List();
     }
@@ -185,14 +214,14 @@ class DatabaseManager {
     /// [返り値用リスト作成]
     var results = List<Comment>();
     await _db.collection("comments")
-        .where("postId", isEqualTo: postId)   /// [commentに紐づく投稿のみ特定: where("dbのフィールド名", isEqualTo: 拾ってきたpostId)]
-        .orderBy("commentDateTime")    /// [並び方をVに合わせて揃える]
-        .get()     /// [取得したvalue: List型QuerySnapshot取得]
-        .then((value) {   /// [Futureゆえ,,,F.then().catchError()可能,,,DartDataClass変換して格納]
-          value.docs.forEach((element) {
-            results.add(Comment.fromMap(element.data()));
-          });
-        });
+              .where("postId", isEqualTo: postId)   /// [commentに紐づく投稿のみ特定: where("dbのフィールド名", isEqualTo: 拾ってきたpostId)]
+              .orderBy("commentDateTime")    /// [並び方をVに合わせて揃える]
+              .get()     /// [取得したvalue: List型QuerySnapshot取得]
+              .then((value) {   /// [Futureゆえ,,,F.then().catchError()可能,,,DartDataClass変換して格納]
+                value.docs.forEach((element) {
+                  results.add(Comment.fromMap(element.data()));
+                });
+              });
     /// [>> MAKE INDEX]
     return results;
   }
@@ -208,11 +237,15 @@ class DatabaseManager {
   }
 
 
+
+
+
   /// [FutureNoReturn, Argu]
   Future<void> likeIt(Like like) async {
     /// [crud: createのパターン]
     /// [collection("likes") ゆえ,likeのidをレコードdoc()に]
-    await _db.collection("likes").doc(like.likeId).set(like.toMap());
+    await _db.collection("likes").doc(like.likeId)
+              .set(like.toMap());
   }
   Future<void> unLikeIt(Post post, User currentUser) async {
     /// [いいね取り消し=likeId指定不可 -> documentID取得して削除]
@@ -234,21 +267,22 @@ class DatabaseManager {
   /// [FutureList<Like>Return, Argu]
   Future<List<Like>> getLikes(String postId) async {
     /// [データがあるか判定]
-    final query = await _db.collection("likes").get();
+    final query = await _db.collection("likes")
+                            .get();
     if (query.docs.length == 0) {
       return List();
     }
     var results = List<Like>();
     await _db.collection("likes")
-        .where("postId", isEqualTo: postId)
-        .orderBy("likeDateTime")
-        .get()
-        .then((value) => {
-          value.docs.forEach((element) {
-            /// [elementはmap形式: Map<String, dynamic> data()]
-            results.add(Like.fromMap(element.data()));
-          }),
-        });
+              .where("postId", isEqualTo: postId)
+              .orderBy("likeDateTime")
+              .get()
+              .then((value) => {
+                value.docs.forEach((element) {
+                  /// [elementはmap形式: Map<String, dynamic> data()]
+                  results.add(Like.fromMap(element.data()));
+                }),
+              });
     return results;
   }
 
@@ -262,8 +296,8 @@ class DatabaseManager {
     await postRef.delete();
     /// [>> comment]
     final commentRef = await _db.collection("comments")
-                            .where("postId", isEqualTo: postId)
-                            .get();
+                                .where("postId", isEqualTo: postId)
+                                .get();
     /// [ERROR: awaitないとdocs出てこない]
     commentRef.docs.forEach((element) async {
       final ref = _db.collection("comments").doc(element.id);
@@ -271,8 +305,8 @@ class DatabaseManager {
     });
     /// [>> like]
     final likeRef = await _db.collection("likes")
-                            .where("postId", isEqualTo: postId)
-                            .get();
+                              .where("postId", isEqualTo: postId)
+                              .get();
     likeRef.docs.forEach((element) async {
       final ref = _db.collection("likes").doc(element.id);
       await ref.delete();
@@ -284,21 +318,7 @@ class DatabaseManager {
 
 
 
-  /// [Firestore格納の型: "idA","idB","idC","idD",,, -> List<String>]
-  /// [FutureList<String>Return, Argu]
-  Future<List<String>> getFollowerUserId(String userId) async {
-    /// [Firestoreから取得したい = 取得結果判定]
-    final query = await _db.collection("users").doc(userId)
-                            .collection("followers").get();   /// [SubCollection]
-    /// [THE Firestore: サブコレクションを設定可能]
-    if (query.docs.length == 0) return List();
-    var userIds = List<String>();
-    query.docs.forEach((id) {
-      /// [ERROR: data["userId"]] 前に()必要
-      userIds.add(id.data()["userId"]);
-    });
-    return userIds;
-  }
+
 
 
   /// [FutureNoReturm, Argu]
@@ -336,6 +356,62 @@ class DatabaseManager {
     */
     return soughtUsers;   /// [こっち]
   }
+
+
+
+
+  /// [FOLLOW]
+  /// [FutureNoReturn, Argu]
+  Future<void> follow(User profileUser, User currentUser) async {
+    /// [database操作]
+    /// [A --follow-> B]
+    /// [users/A: subCollection(followings)/B]
+    /// [users/b: subCollection(followers)/A]
+    /// [--------------------------------------]
+    /// [> currentUserにとってのfollowingsは]
+    /// await _db.collection("users").doc(currentUser.userId).collection("followings").doc(profileUser.userId).set("userId": profileUser.userId); [名前付き引数ERROR]
+    await _db.collection("users").doc(currentUser.userId)
+              .collection("followings").doc(profileUser.userId)
+              .set({"userId": profileUser.userId});   /// [{Map型}]
+    /// [> profileUserにとってのfollowersは]
+    await _db.collection("users").doc(profileUser.userId)
+              .collection("followers").doc(currentUser.userId)
+              .set({"userId": currentUser.userId});
+  }
+
+  /// [UNFOLLOW]
+  /// [FutureNoReturn, Argu]
+  Future<void> unFollow(User profileUser, User currentUser) async {
+    /// [> currentUserのfollowingsからの削除]
+    await _db.collection("users").doc(currentUser.userId)
+              .collection("followings").doc(profileUser.userId)
+              .delete();
+    /// [> profileUserのfollowersからの削除]
+    await _db.collection("users").doc(profileUser.userId)
+              .collection("followers").doc(currentUser.userId)
+              .delete();
+  }
+
+  /// [FutureBoolReturn, Argu]
+  Future<bool> checkIsFollowing(User profileUser, User currentUser) async {
+    /// [まず自分のusersCollectionの中にfollowingsがあって、次に相手のIDがあればよい]
+    final query = await _db.collection("users").doc(currentUser.userId)
+                            .collection("followings")
+                            .get();
+    /// [いなかった時点でfalse]
+    if (query.docs.length == 0) return false;
+    /// [いたら]
+    final checkQuery = await _db.collection("users").doc(currentUser.userId)
+                                  .collection("followings")
+                                  .where("userId", isEqualTo: profileUser.userId)
+                                  .get();
+    if (checkQuery.docs.length > 0) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
 
 
 

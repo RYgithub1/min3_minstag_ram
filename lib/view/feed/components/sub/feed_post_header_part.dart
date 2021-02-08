@@ -89,7 +89,7 @@ class FeedPostHeaderPart extends StatelessWidget {
 
 
 
-  /// [PresentNoreturn, Argu]
+  /// [PresentNoreturn, Argu, getFuture]
   Future<void> _deletePost(BuildContext context, Post post) async {
     final feedViewModel = Provider.of<FeedViewModel>(context, listen: false);
     await feedViewModel.deletePost(post, feedMode);   /// [feedModeも渡す必要: Post削除後に開く2パターン]

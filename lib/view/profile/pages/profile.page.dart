@@ -20,7 +20,7 @@ class ProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
 
     final profileViewModel = Provider.of<ProfileViewModel>(context, listen: false);
-    /// [CurrentUser誰かにより内容変わるので]
+    /// [CurrentUser誰かにより内容変わるので: ユーザーチェック]
     profileViewModel.setProfileUser(profileMode, selectedUser);
 
     /// [Futureで逃がす]

@@ -81,8 +81,6 @@ class PostRepository {
       /// [R: 自分がフォローしているユーザーの投稿を取得]
       return dbManager.getPostsMineAndFollowings(feedUser.userId);
 
-      // await
-
     } else {   /// [------ feedMode == FeedMode.FROM_PROFILE ------]
       /// [R: プロフィール画面に表示されているユーザーの投稿を取得]
       // return null;
@@ -97,6 +95,7 @@ class PostRepository {
   Future<void> updatePost(Post updatePost) async {
     /// return await dbManager.updatePost(updatePost);  /// [returnがあっても自動で無視してくれる様子]
     await dbManager.updatePost(updatePost);
+    // return dbManager.updatePost(updatePost);
   }
   // reference: MIN
   /*
@@ -165,8 +164,8 @@ class PostRepository {
     final likes = await dbManager.getLikes(postId);
     /// [自分がデータにいるか判定]
     var isLikedPost = false;
-    for (var like in likes) {
-      if (like.likeUserId == currentUser.userId) {
+    for (var like in likes){
+      if (like.likeUserId == currentUser.userId){
         isLikedPost = true;
         break;
       }
@@ -180,10 +179,7 @@ class PostRepository {
   /// [FutureNoreturn, Argu]
   Future<void> deletePost(String postId, String imageStoragePath) async {
     await dbManager.deletePost(postId, imageStoragePath);
-
   }
-
-
 
 
 }

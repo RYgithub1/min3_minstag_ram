@@ -15,7 +15,7 @@ class SearchViewModel extends ChangeNotifier {
 
 
 
-  /// [PresentNoReturn, Argu, ,,,but事象が未来に発生,,,ゆえFuture]
+  /// [PresentNoReturn, Argu, getFuture]
   Future<void> searchUsers(String query) async {
     soughtUsers = await userRepository.searchUsers(query);
     // notifyListeners();

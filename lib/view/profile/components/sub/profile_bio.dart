@@ -45,17 +45,31 @@ class ProfileBio extends StatelessWidget {
 
 
 
+  /// [follow/unfollow BTN: currentUserと対象profileUserの両側同時処理]
   /// [child: xxx  -> WidgetのReturn必要]
   /// [PresentWidgetreturn, Argu]
   _button(BuildContext context, User profileUser) {
+    final profileViewModel = Provider.of<ProfileViewModel>(context, listen: false);   /// [ふぉろーuser必要]
+    final isFollowing = profileViewModel.isFollowingProfileUser;
+
     return RaisedButton(
+      onPressed: () {
+        /// mode = ProfileMode.MYSELF   [=読まず, ==]
+        mode == ProfileMode.MYSELF
+            ? _openEditProfileScreen(context)
+            : isFollowing
+                ? _unFollow(context)     /// [自分がfollowしている場合,unFollow]
+                : _follow(context);
+      },
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.0)),
       child: mode == ProfileMode.MYSELF
           ? Text(S.of(context).editProfile)
-          : Text("follow"),
-      onPressed: () => _openEditProfileScreen(context),
+          : isFollowing
+              ? Text(S.of(context).unFollow)
+              : Text(S.of(context).follow),
     );
   }
+
 
 
 
@@ -65,6 +79,23 @@ class ProfileBio extends StatelessWidget {
       builder: (_) => EditProfileScreen(),
     ));
   }
+
+
+
+  /// [FOLLOW]
+  /// [PresentNoReturn, Argu]
+  _follow(BuildContext context) {
+    final profileViewModel = Provider.of<ProfileViewModel>(context, listen: false);
+    profileViewModel.follow();
+  }
+
+  /// [UNFOLLOW]
+  /// [PresentNoReturn, Argu]
+  _unFollow(BuildContext context) {
+    final profileViewModel = Provider.of<ProfileViewModel>(context, listen: false);
+    profileViewModel.unFollow();
+  }
+
 
 
 }
